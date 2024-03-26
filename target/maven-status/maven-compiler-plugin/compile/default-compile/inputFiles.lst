@@ -1,0 +1,17 @@
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\controllers\ActuacionController.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\models\Expediente.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\controllers\TiposExpedienteController.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\models\TiposExpedienteModel.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\controllers\inicio.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\ElexApplication.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\controllers\ExpedienteController.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\services\TiposExpedienteService.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\repositories\TiposExpedienteRepository.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\models\Actuacion.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\services\ActuacionService.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\repositories\ActuacionRepository.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\config\OpenApiConfig.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\repositories\ExpedienteRepository.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\config\MiConfiguracionCors.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\services\ExpedienteService.java
+F:\pruebaspring\pruebaspring\src\main\java\com\soltel\elex\config\SecurityConfig.java
