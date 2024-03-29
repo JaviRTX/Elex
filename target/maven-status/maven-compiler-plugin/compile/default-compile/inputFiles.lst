@@ -6,12 +6,17 @@ f:\Elex\src\main\java\com\soltel\elex\ElexApplication.java
 f:\Elex\src\main\java\com\soltel\elex\services\TiposExpedienteService.java
 f:\Elex\src\main\java\com\soltel\elex\config\MiConfiguracionCors.java
 f:\Elex\src\main\java\com\soltel\elex\config\OpenApiConfig.java
+f:\Elex\src\main\java\com\soltel\elex\controllers\DocumentoController.java
+f:\Elex\src\main\java\com\soltel\elex\models\Documento.java
 f:\Elex\src\main\java\com\soltel\elex\repositories\TiposExpedienteRepository.java
 f:\Elex\src\main\java\com\soltel\elex\services\ExpedienteService.java
+f:\Elex\src\main\java\com\soltel\elex\controllers\ApiOperation.java
 f:\Elex\src\main\java\com\soltel\elex\models\TiposExpedienteModel.java
 f:\Elex\src\main\java\com\soltel\elex\repositories\ActuacionRepository.java
+f:\Elex\src\main\java\com\soltel\elex\services\DocumentoService.java
 f:\Elex\src\main\java\com\soltel\elex\controllers\ExpedienteController.java
 f:\Elex\src\main\java\com\soltel\elex\models\Actuacion.java
 f:\Elex\src\main\java\com\soltel\elex\controllers\inicio.java
 f:\Elex\src\main\java\com\soltel\elex\services\ActuacionService.java
 f:\Elex\src\main\java\com\soltel\elex\controllers\ActuacionController.java
+f:\Elex\src\main\java\com\soltel\elex\repositories\DocumentoRepository.java

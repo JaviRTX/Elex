@@ -10,4 +10,7 @@ public interface TiposExpedienteRepository extends JpaRepository<TiposExpediente
 	
 	// Ordena los resultados por el campo 'id'
     List<TiposExpedienteModel> findAllByOrderByIdAsc();
+    
+    // Agregar el método findByMateria
+    List<TiposExpedienteModel> findByMateria(String materia);
 }
