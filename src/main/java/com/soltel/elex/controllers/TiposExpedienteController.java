@@ -49,26 +49,6 @@ public class TiposExpedienteController {
         }
     }
 
-    @GetMapping("/consultarPorMateria/{materia}")
-    public ResponseEntity<List<TiposExpedienteModel>> consultarPorMateria(@PathVariable String materia) {
-        List<TiposExpedienteModel> tipos = servicioTipo.consultarPorMateria(materia);
-        if (tipos.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        } else {
-            return ResponseEntity.ok(tipos);
-        }
-    }
-
-    @GetMapping("/consultarPorId/{id}")
-    public ResponseEntity<TiposExpedienteModel> consultarPorId(@PathVariable int id) {
-        Optional<TiposExpedienteModel> tipo = servicioTipo.obtenerTipoPorId(id);
-        if (tipo.isPresent()) {
-            return ResponseEntity.ok(tipo.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     // Otra forma de hacerlo...
     @DeleteMapping("/borrar/{id}")
     public ResponseEntity<Void> borrarTipo(@PathVariable int id) {

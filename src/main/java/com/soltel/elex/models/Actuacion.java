@@ -9,39 +9,31 @@ public class Actuacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 255)
     private String descripcion;
 
     @Column(nullable = false)
-    private boolean finalizado;
+    private Boolean finalizado = false;
 
-    @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fecha;
 
-    // Asumiendo que hay una relación con la tabla expedientes
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "expediente", nullable = false)
+    private Expediente expediente;
+
     @Column(nullable = false)
-    private int expediente;
+    private Boolean activo = true;
 
-    // Constructores
-    public Actuacion() {}
-
-    public Actuacion(int id, String descripcion, boolean finalizado, Date fecha, int expediente) {
-        this.id = id;
-        this.descripcion = descripcion;
-        this.finalizado = finalizado;
-        this.fecha = fecha;
-        this.expediente = expediente;
-    }
 
     // Getters y setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -53,11 +45,11 @@ public class Actuacion {
         this.descripcion = descripcion;
     }
 
-    public boolean isFinalizado() {
+    public Boolean getFinalizado() {
         return finalizado;
     }
 
-    public void setFinalizado(boolean finalizado) {
+    public void setFinalizado(Boolean finalizado) {
         this.finalizado = finalizado;
     }
 
@@ -69,14 +61,24 @@ public class Actuacion {
         this.fecha = fecha;
     }
 
-    public int getExpediente() {
+    public Expediente getExpediente() {
         return expediente;
     }
 
-    public void setExpediente(int expediente) {
+    public void setExpediente(Expediente expediente) {
         this.expediente = expediente;
     }
 
-    // Métodos adicionales según sean necesarios
-    // ...
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+
+
+    
 }
+

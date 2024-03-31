@@ -1,7 +1,7 @@
 package com.soltel.elex.models;
 
-import java.math.BigDecimal;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "documentos")
@@ -9,7 +9,7 @@ public class Documento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 255)
     private String ruta;
@@ -18,25 +18,19 @@ public class Documento {
     private BigDecimal tasa;
 
     @Column(nullable = false)
-    private int expediente;
+    private Boolean activo = true;
 
-    // Constructor vacío
-    public Documento() { }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "expediente", nullable = false)
+    private Expediente expediente;
 
-    // Constructor con parámetros
-    public Documento(int id, String ruta, BigDecimal tasa, int expediente) {
-        this.id = id;
-        this.ruta = ruta;
-        this.tasa = tasa;
-        this.expediente = expediente;
-    }
+    // Getters, Setters y posiblemente Constructores aquí
 
-    // Getters y setters
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,14 +50,23 @@ public class Documento {
         this.tasa = tasa;
     }
 
-    public int getExpediente() {
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    public Expediente getExpediente() {
         return expediente;
     }
 
-    public void setExpediente(int expediente) {
+    public void setExpediente(Expediente expediente) {
         this.expediente = expediente;
     }
 
-    // Métodos adicionales según sean necesarios
-    // ...
+    // Getters, Setters y posiblemente Constructores aquí
+
+    
 }

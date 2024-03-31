@@ -1,64 +1,62 @@
 package com.soltel.elex.models;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.*;
 import java.util.Date;
 
+
+@ApiModel(description = "Representa un expediente en el sistema")
 @Entity
 @Table(name = "expedientes")
 public class Expediente {
 
+    @ApiModelProperty(notes = "El ID del expediente", example = "1", required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(nullable = false, unique = true, length = 50)
+    private Integer id;
+
+    @ApiModelProperty(notes = "Código único del expediente", example = "EXP001", required = true)
+    @Column(unique = true, nullable = false, length = 50)
     private String codigo;
 
-    @Temporal(TemporalType.DATE)
+    @ApiModelProperty(notes = "Fecha del expediente", required = true)
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private Date fecha;
 
+    @ApiModelProperty(notes = "Estado actual del expediente", required = true)
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Estado estado;
+    @Column(columnDefinition = "ENUM('Pendiente', 'Enviado', 'Erróneo')")
+    private EstadoExpediente estado;
 
+    @ApiModelProperty(notes = "Opciones adicionales del expediente", example = "Opcion1, Opcion2")
     @Column(length = 70)
     private String opciones;
 
+    @ApiModelProperty(notes = "Descripción detallada del expediente", example = "Descripción del expediente", required = true)
     @Column(nullable = false, length = 255)
     private String descripcion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tipo", nullable = false)
-    private TiposExpedienteModel tipoExpediente;
+    @ApiModelProperty(notes = "Tipo del expediente", example = "1", required = true)
+    @Column(nullable = false)
+    private Byte tipo;
 
-    // Enumeración para el estado
-    public enum Estado {
-        PENDIENTE, ENVIADO, ERRONEO
+    @ApiModelProperty(notes = "Indica si el expediente está activo o no", example = "true", required = true)
+    @Column(nullable = false)
+    private Boolean activo;
+
+    // Getters, Setters, y posiblemente Constructores aquí
+
+    public enum EstadoExpediente {
+        Pendiente, Enviado, Erróneo
     }
 
-    // Constructores, Getters y Setters
-
-    // Constructor vacío
-    public Expediente() {}
-
-    // Constructor con parámetros
-    public Expediente(Long id, String codigo, Date fecha, Estado estado, String opciones, String descripcion, TiposExpedienteModel tipoExpediente) {
-        this.id = id;
-        this.codigo = codigo;
-        this.fecha = fecha;
-        this.estado = estado;
-        this.opciones = opciones;
-        this.descripcion = descripcion;
-        this.tipoExpediente = tipoExpediente;
-    }
-
-    // Getters y setters
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -78,11 +76,11 @@ public class Expediente {
         this.fecha = fecha;
     }
 
-    public Estado getEstado() {
+    public EstadoExpediente getEstado() {
         return estado;
     }
 
-    public void setEstado(Estado estado) {
+    public void setEstado(EstadoExpediente estado) {
         this.estado = estado;
     }
 
@@ -102,13 +100,19 @@ public class Expediente {
         this.descripcion = descripcion;
     }
 
-    public TiposExpedienteModel getTipoExpediente() {
-        return tipoExpediente;
+    public Byte getTipo() {
+        return tipo;
     }
 
-    public void setTipoExpediente(TiposExpedienteModel tipoExpediente) {
-        this.tipoExpediente = tipoExpediente;
+    public void setTipo(Byte tipo) {
+        this.tipo = tipo;
     }
 
-    // Métodos adicionales y lógica de negocio si es necesario
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
 }

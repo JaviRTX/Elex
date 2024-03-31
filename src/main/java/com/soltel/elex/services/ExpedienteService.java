@@ -10,37 +10,27 @@ import java.util.Optional;
 
 @Service
 public class ExpedienteService {
+
     @Autowired
     private ExpedienteRepository expedienteRepository;
 
-    public List<Expediente> consultarTodos() {
-        return expedienteRepository.findAll();
-    }
-
-    public Expediente insertarExpediente(Expediente expediente) {
+    public Expediente saveExpediente(Expediente expediente) {
         return expedienteRepository.save(expediente);
     }
 
-    public Expediente actualizarExpediente(Expediente expedienteExistente) {
-        // Verificar que expedienteExistente no es null y luego guardar
-        if (expedienteExistente != null) {
-            return expedienteRepository.save(expedienteExistente);
-        } else {
-            throw new IllegalArgumentException("El expediente proporcionado es nulo");
-        }
-    }
-
-    public boolean borrarExpediente(Long id) {
-        if (expedienteRepository.existsById(id)) {
-            expedienteRepository.deleteById(id);
-            return true;
-        }
-        return false;
-    }
-
-    public Optional<Expediente> obtenerPorId(Long id) {
+    public Optional<Expediente> getExpedienteById(int id) {
         return expedienteRepository.findById(id);
     }
-    
-    // Otros métodos según sea necesario
+
+    public List<Expediente> getAllExpedientes() {
+        return expedienteRepository.findAll();
+    }
+
+    public void deleteExpediente(int id) {
+        expedienteRepository.deleteById(id);
+    }
+
+    public Expediente updateExpediente(Expediente expediente) {
+        return expedienteRepository.save(expediente);
+    }
 }

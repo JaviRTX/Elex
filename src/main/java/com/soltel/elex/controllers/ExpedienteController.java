@@ -1,53 +1,92 @@
 package com.soltel.elex.controllers;
 
+import com.soltel.elex.models.Actuacion;
 import com.soltel.elex.models.Expediente;
+import com.soltel.elex.models.Expediente.EstadoExpediente;
+import com.soltel.elex.services.ActuacionService;
 import com.soltel.elex.services.ExpedienteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
-
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/expedientes")
+@RequestMapping("/api/expedientes")
+@Api(value = "Gestión de Expedientes")
 public class ExpedienteController {
+
     @Autowired
     private ExpedienteService expedienteService;
 
-    @GetMapping("/consultar")
-    public List<Expediente> consultarTodos() {
-        return expedienteService.consultarTodos();
+    @Autowired
+    private ActuacionService actuacionService;
+
+    @PostMapping
+@ApiOperation(value = "Crear un nuevo expediente con actuación", response = Expediente.class)
+public Expediente createExpedienteConActuacion(
+        @RequestParam String codigo,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+        @RequestParam EstadoExpediente estado,
+        @RequestParam(required = false) String opciones,
+        @RequestParam String descripcion,
+        @RequestParam Byte tipo,
+        @RequestParam Boolean activo,
+        @RequestParam String descripcionActuacion,
+        @RequestParam Boolean finalizadoActuacion,
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaActuacion) {
+
+    // Crear y guardar el Expediente
+    Expediente nuevoExpediente = new Expediente();
+    nuevoExpediente.setCodigo(codigo);
+    nuevoExpediente.setFecha(java.sql.Date.valueOf(fecha)); 
+    nuevoExpediente.setEstado(estado);
+    nuevoExpediente.setOpciones(opciones);
+    nuevoExpediente.setDescripcion(descripcion);
+    nuevoExpediente.setTipo(tipo);
+    nuevoExpediente.setActivo(activo);
+
+    nuevoExpediente = expedienteService.saveExpediente(nuevoExpediente);
+
+    // Crear y guardar la Actuacion, asociada al Expediente
+    Actuacion nuevaActuacion = new Actuacion();
+    nuevaActuacion.setDescripcion(descripcionActuacion);
+    nuevaActuacion.setFinalizado(finalizadoActuacion);
+    if (fechaActuacion != null) {
+        nuevaActuacion.setFecha(java.sql.Date.valueOf(fechaActuacion));
+    }
+    nuevaActuacion.setExpediente(nuevoExpediente);
+    nuevaActuacion.setActivo(true);
+
+    actuacionService.saveActuacion(nuevaActuacion);
+
+    return nuevoExpediente;
+}
+
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Obtener un expediente por ID", response = Expediente.class)
+    public Expediente getExpedienteById(@ApiParam(value = "ID del expediente para buscar", required = true) @PathVariable int id) {
+        return expedienteService.getExpedienteById(id).orElse(null);
     }
 
-    @PostMapping("/insertar/")
-    public Expediente insertarExpediente(@RequestBody Expediente nuevoExpediente) {
-        
-        return expedienteService.insertarExpediente(nuevoExpediente);
-    }
- 
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarExpediente(@PathVariable Long id, @RequestBody Expediente expedienteActualizado) {
-        return expedienteService.obtenerPorId(id)
-                .map(expedienteExistente -> {
-                    expedienteExistente.setCodigo(expedienteActualizado.getCodigo());
-                    expedienteExistente.setFecha(expedienteActualizado.getFecha());
-                    expedienteExistente.setEstado(expedienteActualizado.getEstado());
-                    expedienteExistente.setOpciones(expedienteActualizado.getOpciones());
-                    expedienteExistente.setDescripcion(expedienteActualizado.getDescripcion());
-                    expedienteExistente.setTipoExpediente(expedienteActualizado.getTipoExpediente());
-                    return expedienteService.actualizarExpediente(expedienteExistente);
-                })
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping
+    @ApiOperation(value = "Obtener todos los expedientes", response = List.class)
+    public List<Expediente> getAllExpedientes() {
+        return expedienteService.getAllExpedientes();
     }
 
-    @DeleteMapping("/borrar/{id}")
-    public ResponseEntity<?> borrarExpediente(@PathVariable Long id) {
-        boolean resultado = expedienteService.borrarExpediente(id);
-        if (resultado) {
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping
+    @ApiOperation(value = "Actualizar un expediente", response = Expediente.class)
+    public Expediente updateExpediente(@ApiParam(value = "Expediente actualizado", required = true) @RequestBody Expediente expediente) {
+        return expedienteService.updateExpediente(expediente);
+    }
+
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Eliminar un expediente")
+    public void deleteExpediente(@ApiParam(value = "ID del expediente para eliminar", required = true) @PathVariable int id) {
+        expedienteService.deleteExpediente(id);
     }
 }

@@ -19,7 +19,6 @@ CREATE TABLE tipos_expediente
 (
 	id TINYINT NOT NULL UNIQUE AUTO_INCREMENT,
     materia VARCHAR (20) UNIQUE NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
     PRIMARY KEY PK_tipos_expediente (id)
 ) 
 COMMENT "Tabla Principal Tipos -> Expedientes";
@@ -34,7 +33,6 @@ CREATE TABLE expedientes
     opciones VARCHAR(70) DEFAULT "",
     descripcion VARCHAR(255) NOT NULL,
 	tipo TINYINT NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (tipo) REFERENCES tipos_expediente (id),
     PRIMARY KEY PK_expedientes (id)
 )
@@ -48,7 +46,6 @@ CREATE TABLE actuaciones
     finalizado BOOLEAN DEFAULT 0,
     fecha DATE NOT NULL,
     expediente INT NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (expediente) REFERENCES expedientes (id),
     PRIMARY KEY PK_actuaciones (id)
 );
@@ -60,7 +57,6 @@ CREATE TABLE documentos
 	ruta VARCHAR(255) NOT NULL,
     tasa DECIMAL(6,2) NOT NULL,
     expediente INT NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (expediente) REFERENCES expedientes (id),
     PRIMARY KEY PK_documentos (id)
 );

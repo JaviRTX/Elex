@@ -33,9 +33,4 @@ public class TiposExpedienteService {
     public Optional<TiposExpedienteModel> obtenerTipoPorId(int id) {
         return repository.findById(id);
     }
-
-    // Agregar el método para consultar por materia
-    public List<TiposExpedienteModel> consultarPorMateria(String materia) {
-        return repository.findByMateria(materia);
-    }
 }
