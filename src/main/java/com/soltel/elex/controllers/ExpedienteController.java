@@ -1,9 +1,11 @@
 package com.soltel.elex.controllers;
 
 import com.soltel.elex.models.Actuacion;
+import com.soltel.elex.models.Documento;
 import com.soltel.elex.models.Expediente;
 import com.soltel.elex.models.Expediente.EstadoExpediente;
 import com.soltel.elex.services.ActuacionService;
+import com.soltel.elex.services.DocumentoService;
 import com.soltel.elex.services.ExpedienteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +29,9 @@ public class ExpedienteController {
     @Autowired
     private ActuacionService actuacionService;
 
+    @Autowired
+    private DocumentoService documentoService;
+
     @PostMapping
 @ApiOperation(value = "Crear un nuevo expediente con actuación", response = Expediente.class)
 public Expediente createExpedienteConActuacion(
@@ -37,7 +44,9 @@ public Expediente createExpedienteConActuacion(
         @RequestParam Boolean activo,
         @RequestParam String descripcionActuacion,
         @RequestParam Boolean finalizadoActuacion,
-        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaActuacion) {
+        @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaActuacion,
+        @RequestParam String rutaDocumento,
+        @RequestParam Double tasaDocumento) {
 
     // Crear y guardar el Expediente
     Expediente nuevoExpediente = new Expediente();
@@ -62,6 +71,15 @@ public Expediente createExpedienteConActuacion(
     nuevaActuacion.setActivo(true);
 
     actuacionService.saveActuacion(nuevaActuacion);
+
+    // Crear y guardar el Documento, asociado al Expediente
+    Documento nuevoDocumento = new Documento();
+    nuevoDocumento.setRuta(rutaDocumento);
+    nuevoDocumento.setTasa(BigDecimal.valueOf(tasaDocumento)); // Convertir Double a BigDecimal
+    nuevoDocumento.setExpediente(nuevoExpediente);
+    nuevoDocumento.setActivo(true);
+
+    documentoService.saveDocumento(nuevoDocumento);
 
     return nuevoExpediente;
 }

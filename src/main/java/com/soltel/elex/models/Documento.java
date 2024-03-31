@@ -1,7 +1,7 @@
 package com.soltel.elex.models;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "documentos")
@@ -11,20 +11,20 @@ public class Documento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String ruta;
 
-    @Column(nullable = false, precision = 6, scale = 2)
-    private BigDecimal tasa;
-
     @Column(nullable = false)
-    private Boolean activo = true;
+    private BigDecimal tasa;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expediente", nullable = false)
     private Expediente expediente;
 
-    // Getters, Setters y posiblemente Constructores aquí
+    @Column(nullable = false)
+    private Boolean activo = true;
+
+    // Getters y setters
 
     public Integer getId() {
         return id;
@@ -50,14 +50,6 @@ public class Documento {
         this.tasa = tasa;
     }
 
-    public Boolean getActivo() {
-        return activo;
-    }
-
-    public void setActivo(Boolean activo) {
-        this.activo = activo;
-    }
-
     public Expediente getExpediente() {
         return expediente;
     }
@@ -66,7 +58,15 @@ public class Documento {
         this.expediente = expediente;
     }
 
-    // Getters, Setters y posiblemente Constructores aquí
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+    
 
     
 }
