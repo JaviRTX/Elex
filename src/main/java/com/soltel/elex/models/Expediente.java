@@ -4,13 +4,16 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @ApiModel(description = "Representa un expediente en el sistema")
 @Entity
 @Table(name = "expedientes")
 public class Expediente {
-
+    
     @ApiModelProperty(notes = "El ID del expediente", example = "1", required = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +48,18 @@ public class Expediente {
     @ApiModelProperty(notes = "Indica si el expediente está activo o no", example = "true", required = true)
     @Column(nullable = false)
     private Boolean activo;
+
+    // Relación con Actuacion
+    @JsonIgnore
+    @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Actuacion> actuaciones;
+
+    // Relación con Documento
+    @JsonIgnore
+    @OneToMany(mappedBy = "expediente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Documento> documentos;
+
+    
 
     // Getters, Setters, y posiblemente Constructores aquí
 
@@ -115,4 +130,22 @@ public class Expediente {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
+
+    public List<Actuacion> getActuaciones() {
+        return actuaciones;
+    }
+
+    public void setActuaciones(List<Actuacion> actuaciones) {
+        this.actuaciones = actuaciones;
+    }
+
+    public List<Documento> getDocumentos() {
+        return documentos;
+    }
+
+    public void setDocumentos(List<Documento> documentos) {
+        this.documentos = documentos;
+    }
+
+    
 }

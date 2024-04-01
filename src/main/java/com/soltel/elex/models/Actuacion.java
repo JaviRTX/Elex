@@ -76,9 +76,6 @@ public class Actuacion {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
-
-
-
     
 }
 

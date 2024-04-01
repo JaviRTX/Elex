@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ExpedienteRepository extends JpaRepository<Expediente, Integer> {
     // Aquí puedes añadir métodos personalizados si es necesario
+    
 }

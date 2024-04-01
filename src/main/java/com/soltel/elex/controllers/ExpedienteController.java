@@ -12,14 +12,16 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/expedientes")
+@RequestMapping("/api/expedientes/")
 @Api(value = "Gestión de Expedientes")
 public class ExpedienteController {
 
@@ -86,20 +88,50 @@ public Expediente createExpedienteConActuacion(
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Obtener un expediente por ID", response = Expediente.class)
-    public Expediente getExpedienteById(@ApiParam(value = "ID del expediente para buscar", required = true) @PathVariable int id) {
-        return expedienteService.getExpedienteById(id).orElse(null);
+    public ResponseEntity<Expediente> getExpedienteById(@ApiParam(value = "ID del expediente para buscar", required = true) @PathVariable int id) {
+        Optional<Expediente> expediente = expedienteService.getExpedienteById(id);
+        if (expediente.isPresent()) {
+            return ResponseEntity.ok(expediente.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-    @GetMapping
-    @ApiOperation(value = "Obtener todos los expedientes", response = List.class)
+    @GetMapping("/consultar")
+    @ApiOperation(value = "Obtener expedientes", response = Expediente.class)
     public List<Expediente> getAllExpedientes() {
         return expedienteService.getAllExpedientes();
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @ApiOperation(value = "Actualizar un expediente", response = Expediente.class)
-    public Expediente updateExpediente(@ApiParam(value = "Expediente actualizado", required = true) @RequestBody Expediente expediente) {
-        return expedienteService.updateExpediente(expediente);
+    public ResponseEntity<Expediente> updateExpediente(
+            @PathVariable Integer id,
+            @RequestParam String codigo,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha,
+            @RequestParam EstadoExpediente estado,
+            @RequestParam(required = false) String opciones,
+            @RequestParam String descripcion,
+            @RequestParam Byte tipo,
+            @RequestParam Boolean activo) {
+
+        Optional<Expediente> expedienteOpt = expedienteService.getExpedienteById(id);
+        if (!expedienteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Expediente expedienteActualizado = expedienteOpt.get();
+        expedienteActualizado.setCodigo(codigo);
+        expedienteActualizado.setFecha(java.sql.Date.valueOf(fecha));
+        expedienteActualizado.setEstado(estado);
+        expedienteActualizado.setOpciones(opciones);
+        expedienteActualizado.setDescripcion(descripcion);
+        expedienteActualizado.setTipo(tipo);
+        expedienteActualizado.setActivo(activo);
+
+        expedienteService.updateExpediente(expedienteActualizado);
+
+        return ResponseEntity.ok(expedienteActualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -107,4 +139,6 @@ public Expediente createExpedienteConActuacion(
     public void deleteExpediente(@ApiParam(value = "ID del expediente para eliminar", required = true) @PathVariable int id) {
         expedienteService.deleteExpediente(id);
     }
+
+    
 }

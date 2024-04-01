@@ -15,5 +15,14 @@ public class DocumentoService {
         return documentoRepository.save(documento);
     }
 
-    // Otros métodos según sea necesario
+    public Documento updateDocumento(Documento documento) {
+        if(documento.getId() != null && documentoRepository.existsById(documento.getId())) {
+            return documentoRepository.save(documento);
+        } else {
+            // Puedes lanzar una excepción personalizada o manejar el caso de un id no encontrado
+            throw new RuntimeException("Documento no encontrado con id: " + documento.getId());
+        }
+    }
+    
 }
+
