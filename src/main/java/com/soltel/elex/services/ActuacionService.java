@@ -4,6 +4,7 @@ import com.soltel.elex.models.Actuacion;
 import com.soltel.elex.repositories.ActuacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class ActuacionService {
@@ -22,6 +23,10 @@ public Actuacion updateActuacion(Actuacion actuacion) {
         // Puedes lanzar una excepción personalizada o manejar el caso de un id no encontrado
         throw new RuntimeException("Actuacion no encontrada con id: " + actuacion.getId());
     }
+}
+
+public Optional<Actuacion> getActuacionById(Integer id) {
+    return actuacionRepository.findById(id);
 }
 
 // Otros métodos según sea necesario

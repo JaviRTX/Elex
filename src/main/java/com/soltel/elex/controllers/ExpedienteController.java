@@ -140,5 +140,102 @@ public Expediente createExpedienteConActuacion(
         expedienteService.deleteExpediente(id);
     }
 
+    //ACTUACIONES
+    @PutMapping("/{expedienteId}/actuaciones/{actuacionId}")
+    @ApiOperation(value = "Actualizar una actuación de un expediente específico", response = Actuacion.class)
+    public ResponseEntity<Actuacion> updateActuacionDeExpediente(
+            @PathVariable Integer expedienteId,
+            @PathVariable Integer actuacionId,
+            @RequestParam String descripcion,
+            @RequestParam Boolean finalizado,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
+
+        Optional<Expediente> expedienteOpt = expedienteService.getExpedienteById(expedienteId);
+        if (!expedienteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Optional<Actuacion> actuacionOpt = actuacionService.getActuacionById(actuacionId);
+        if (!actuacionOpt.isPresent() || !actuacionOpt.get().getExpediente().getId().equals(expedienteId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Actuacion actuacionActualizada = actuacionOpt.get();
+        actuacionActualizada.setDescripcion(descripcion);
+        actuacionActualizada.setFinalizado(finalizado);
+        if (fecha != null) {
+            actuacionActualizada.setFecha(java.sql.Date.valueOf(fecha));
+        }
+
+        actuacionService.updateActuacion(actuacionActualizada);
+
+        return ResponseEntity.ok(actuacionActualizada);
+    }
+
+    //DOCUMENTOS
+    @GetMapping("/{id}/de-expendiente-por-actuaciones")
+    @ApiOperation(value = "Obtener todas las actuaciones de un expediente específico", response = List.class)
+    public ResponseEntity<List<Actuacion>> getActuacionesByExpedienteId(@PathVariable Integer id) {
+        Optional<Expediente> expedienteOpt = expedienteService.getExpedienteById(id);
+        if (!expedienteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Expediente expediente = expedienteOpt.get();
+        List<Actuacion> actuaciones = expediente.getActuaciones(); // Asegúrate de que existe el método getActuaciones() en la clase Expediente
+
+        if (actuaciones.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(actuaciones);
+
+    
+    }
+
+    @GetMapping("/{id}/de-expendiente-por-documentos")
+    @ApiOperation(value = "Obtener todos los documentos de un expediente específico", response = List.class)
+    public ResponseEntity<List<Documento>> getDocumentosByExpedienteId(@PathVariable Integer id) {
+        Optional<Expediente> expedienteOpt = expedienteService.getExpedienteById(id);
+        if (!expedienteOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Expediente expediente = expedienteOpt.get();
+        List<Documento> documentos = expediente.getDocumentos(); // Asegúrate de que existe el método getDocumentos() en la clase Expediente
+
+        if (documentos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(documentos);
+    }
+
+    @PutMapping("/{expedienteId}/documentos/{documentoId}")
+@ApiOperation(value = "Actualizar un documento de un expediente específico", response = Documento.class)
+public ResponseEntity<Documento> updateDocumentoDeExpediente(
+        @PathVariable Integer expedienteId,
+        @PathVariable Integer documentoId,
+        @RequestParam String ruta,
+        @RequestParam BigDecimal tasa) {
+
+    Optional<Expediente> expedienteOpt = expedienteService.getExpedienteById(expedienteId);
+    if (!expedienteOpt.isPresent()) {
+        return ResponseEntity.notFound().build();
+    }
+
+    Optional<Documento> documentoOpt = documentoService.getDocumentoById(documentoId);
+    if (!documentoOpt.isPresent() || !documentoOpt.get().getExpediente().getId().equals(expedienteId)) {
+        return ResponseEntity.notFound().build();
+    }
+
+    Documento documentoActualizado = documentoOpt.get();
+    documentoActualizado.setRuta(ruta);
+    documentoActualizado.setTasa(tasa);
+
+    documentoService.updateDocumento(documentoActualizado);
+
+    return ResponseEntity.ok(documentoActualizado);
+}
     
 }

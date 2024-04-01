@@ -1,7 +1,11 @@
 package com.soltel.elex.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 import com.soltel.elex.models.Documento;
 import com.soltel.elex.repositories.DocumentoRepository;
 
@@ -24,5 +28,13 @@ public class DocumentoService {
         }
     }
     
+    public Optional<Documento> getDocumentoByExpedienteId(Integer id) {
+    return documentoRepository.findById(id);
+    }
+
+    public Optional<Documento> getDocumentoById(Integer id) {
+        return documentoRepository.findById(id);
+    }
 }
 
+//getDocumentoByExpedienteId
