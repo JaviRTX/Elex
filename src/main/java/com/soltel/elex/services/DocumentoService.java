@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.soltel.elex.models.Documento;
 import com.soltel.elex.repositories.DocumentoRepository;
-
+import java.util.List;
 @Service
 public class DocumentoService {
 
@@ -34,6 +34,10 @@ public class DocumentoService {
 
     public Optional<Documento> getDocumentoById(Integer id) {
         return documentoRepository.findById(id);
+    }
+
+    public List<Documento> findAll() {
+        return documentoRepository.findAll();
     }
 }
 

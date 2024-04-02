@@ -3,6 +3,8 @@ package com.soltel.elex.models;
 import jakarta.persistence.*;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "actuaciones")
 public class Actuacion {
@@ -21,6 +23,7 @@ public class Actuacion {
     private Date fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "expediente", nullable = false)
     private Expediente expediente;
 

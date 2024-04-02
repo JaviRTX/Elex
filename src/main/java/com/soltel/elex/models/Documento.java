@@ -1,6 +1,9 @@
 package com.soltel.elex.models;
 
 import java.math.BigDecimal;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -18,6 +21,7 @@ public class Documento {
     private BigDecimal tasa;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "expediente", nullable = false)
     private Expediente expediente;
 

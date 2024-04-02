@@ -5,7 +5,7 @@ import com.soltel.elex.repositories.ActuacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-
+import java.util.List;
 @Service
 public class ActuacionService {
 
@@ -29,5 +29,9 @@ public Optional<Actuacion> getActuacionById(Integer id) {
     return actuacionRepository.findById(id);
 }
 
-// Otros métodos según sea necesario
+
+public List<Actuacion> findAll() {
+    return actuacionRepository.findAll();
 }
+}
+// Otros métodos según sea necesario
