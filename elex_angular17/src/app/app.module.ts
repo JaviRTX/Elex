@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FormulariosTiposComponent } from './formularios-tipos/formularios-tipos.component';
 import { RouterModule } from '@angular/router';
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { RouterModule } from '@angular/router';
     BrowserModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot([])  // Agrega esto si no tienes rutas específicas
+    RouterModule.forRoot([]), // Agrega esto si no tienes rutas específicas
+    ReactiveFormsModule,
   ],
   providers: [
   ],
