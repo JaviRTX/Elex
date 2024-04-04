@@ -1,54 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ExpedienteService } from './services/expediente.service';
-import { EstadoExpediente } from './models/estado-expediente.enum';
+import { Form, FormBuilder, FormGroup } from '@angular/forms';
+import { ExpedienteService } from '../services/expediente.service';
+import { Expediente } from '../models/expediente.model';
 
 @Component({
-  selector: 'app-expediente',
+  selector: 'app-expedientes',
   templateUrl: './expediente.component.html',
-  // styleUrls: ['./expediente.component.css'] (uncomment if you have a stylesheet)
+  styleUrls: ['./expediente.component.css']
 })
-export class ExpedienteComponent implements OnInit {
-  expedienteForm!: FormGroup;
-  estadoExpedienteOptions = Object.values(EstadoExpediente); // If using enum
+export class ExpedientesComponent implements OnInit {
+  // Inicialización directa
+  expedienteForm: FormGroup = this.formBuilder.group({
+    codigo: [''],
+    fecha: [''],
+    estado: [''],
+    opciones: [''],
+    descripcion: [''],
+    tipo: [''],
+    activo: [''],
+    descripcionActuacion: [''],
+    finalizadoActuacion: [''],
+    fechaActuacion: [''],
+    rutaDocumento: [''],
+    tasaDocumento: ['']
+    // Agrega controles de formulario para otros campos
+  });
+  expedientes: Expediente[] = []; // Propiedad para almacenar los expedientes consultados
 
   constructor(
     private formBuilder: FormBuilder,
     private expedienteService: ExpedienteService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.expedienteForm = this.formBuilder.group({
-      codigo: ['', Validators.required],
-      fecha: ['', Validators.required],
-      estado: [EstadoExpediente.Pendiente, Validators.required], // Set default value
-      descripcion: ['', Validators.required],
-      tipo: [0, Validators.required],
-      activo: [true],
-      actuacion: this.formBuilder.group({
-        descripcion: [''],
-        finalizado: [false],
-        fecha: ['']
-      }),
-      documento: this.formBuilder.group({
-        ruta: [''],
-        tasa: [0]
-      })
+      codigo: [''],
+      fecha: [''],
+      estado: [''],
+      opciones: [''],
+      descripcion: [''],
+      tipo: [''],
+      activo: [''],
+      descripcionActuacion: [''],
+      finalizadoActuacion: [''],
+      fechaActuacion: [''],
+      rutaDocumento: [''],
+      tasaDocumento: ['']
+      // Agrega controles de formulario para otros campos
     });
   }
 
   onSubmit(): void {
-    if (this.expedienteForm.valid) {
-      this.expedienteService.createExpediente(this.expedienteForm.value).subscribe({
-        next: (expediente) => {
-          console.log('Expediente created successfully', expediente);
-          // Handle successful creation
-        },
-        error: (error) => {
-          console.error('Error creating expediente', error);
-          // Handle errors here
-        }
-      });
-    }
+    const expediente = new Expediente(
+      this.expedienteForm.value.codigo,
+      this.expedienteForm.value.fecha,
+      this.expedienteForm.value.estado,
+      this.expedienteForm.value.opciones,
+      this.expedienteForm.value.descripcion,
+      this.expedienteForm.value.tipo,
+      this.expedienteForm.value.activo,
+      this.expedienteForm.value.descripcionActuacion,
+      this.expedienteForm.value.finalizadoActuacion,
+      this.expedienteForm.value.fechaActuacion,
+      this.expedienteForm.value.rutaDocumento,
+      this.expedienteForm.value.tasaDocumento
+    );
+
+    this.expedienteService.createExpediente(expediente).subscribe(result => {
+      console.log('Expediente creado:', result);
+      // Aquí podrías, por ejemplo, limpiar el formulario o mostrar un mensaje de éxito
+    }, error => {
+      console.error('Error al crear el expediente:', error);
+      // Aquí manejarías los errores, como mostrar un mensaje de error
+    });
+  }
+
+  consultarExpedientes(): void {
+    this.expedienteService.consultarExpedientes().subscribe(expedientes => {
+      this.expedientes = expedientes;
+      // Procesa aquí los expedientes consultados
+    }, error => {
+      console.error('Error al consultar los expedientes:', error);
+    });
   }
 }

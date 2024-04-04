@@ -23,9 +23,9 @@ public class SecurityConfig {
             // Esta configuración es bastante permisiva, pero entra en conflicto con MiConfiguracionCors.java
             //.cors(cors -> cors.configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues()))
             .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF
-            .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/tipos_expediente/**").permitAll() 	// Permitir solicitudes a /clientes y /reservas
-                .anyRequest().authenticated())
+           // .authorizeHttpRequests(auth -> auth
+           // 		.requestMatchers("/tipos_expediente/**").permitAll() 	// Permitir solicitudes a /clientes y /reservas
+            //    .anyRequest().authenticated())
             .formLogin(form -> form
                 .defaultSuccessUrl("/inicio", true));
                 

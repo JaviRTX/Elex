@@ -34,7 +34,7 @@ public class ExpedienteController {
     @Autowired
     private DocumentoService documentoService;
 
-    @PostMapping
+    @PostMapping("/insertar")
 @ApiOperation(value = "Crear un nuevo expediente con actuación", response = Expediente.class)
 public Expediente createExpedienteConActuacion(
         @RequestParam String codigo,
@@ -43,9 +43,9 @@ public Expediente createExpedienteConActuacion(
         @RequestParam(required = false) String opciones,
         @RequestParam String descripcion,
         @RequestParam Byte tipo,
-        @RequestParam Boolean activo,
+        @RequestParam(defaultValue = "true") Boolean activo,
         @RequestParam String descripcionActuacion,
-        @RequestParam Boolean finalizadoActuacion,
+        @RequestParam(defaultValue = "false") Boolean finalizadoActuacion,
         @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaActuacion,
         @RequestParam String rutaDocumento,
         @RequestParam Double tasaDocumento) {
@@ -103,7 +103,7 @@ public Expediente createExpedienteConActuacion(
         return expedienteService.getAllExpedientes();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/actualizar")
     @ApiOperation(value = "Actualizar un expediente", response = Expediente.class)
     public ResponseEntity<Expediente> updateExpediente(
             @PathVariable Integer id,
@@ -134,7 +134,7 @@ public Expediente createExpedienteConActuacion(
         return ResponseEntity.ok(expedienteActualizado);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     @ApiOperation(value = "Eliminar un expediente")
     public void deleteExpediente(@ApiParam(value = "ID del expediente para eliminar", required = true) @PathVariable int id) {
         expedienteService.deleteExpediente(id);
