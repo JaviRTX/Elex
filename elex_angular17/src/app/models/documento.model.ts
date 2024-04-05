@@ -2,8 +2,11 @@ export class Documento {
   constructor(
     public id: number,
     public ruta: string,
-    public tasa: number, // Asegúrate de que el tipo coincida con tu backend
-    public activo: boolean,
-    // El campo 'expediente' no es necesario si solo estás manejando la relación desde el lado del expediente
+    public tasa: number,
+    public activo: boolean
   ) {}
+
+  static filtrarActivos(documentos: Documento[]): Documento[] {
+    return documentos.filter(documento => documento.activo);
+  }
 }

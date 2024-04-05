@@ -3,7 +3,7 @@ export class Expediente {
       public id: number,
       public codigo: string,
       public fecha: Date,
-      public estado: string, // Ajusta según tu modelo de datos
+      public estado: string,
       public opciones: string,
       public descripcion: string,
       public tipo: number,
@@ -15,4 +15,9 @@ export class Expediente {
       public tasaDocumento: number
       // Agrega otros campos necesarios aquí
   ) {}
+
+  static filtrarActivos(expedientes: Expediente[]): Expediente[] {
+      return expedientes.filter(expediente => expediente.activo);
+  }
 }
+

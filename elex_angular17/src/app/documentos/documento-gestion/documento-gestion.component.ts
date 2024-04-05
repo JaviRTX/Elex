@@ -19,12 +19,16 @@ constructor(private formBuilder: FormBuilder, private documentoService: Document
 }
 
 onSubmit() {
-  // Usando '!' para asegurarnos de que 'expedienteId' no es nulo
   const expedienteId = this.consultaForm.get('expedienteId')!.value;
   this.documentoService.getDocumentosByExpedienteId(expedienteId).subscribe(
-    data => this.documentos = data,
-    error => console.error(error)
+    data => {
+      // Si 'activo' es booleano
+      this.documentos = data.filter(doc => doc.activo);
+
+      // Si 'activo' es un número y quieres filtrar aquellos que no sean 0
+      // this.documentos = data.filter(doc => doc.activo !== 0);
+    },
+    error => console.error('Error al obtener documentos:', error)
   );
 }
-
 }

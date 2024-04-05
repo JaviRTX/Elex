@@ -66,7 +66,8 @@ export class ExpedientesComponent implements OnInit {
 
   consultarExpedientes(): void {
     this.expedienteService.consultarExpedientes().subscribe(expedientes => {
-      this.expedientes = expedientes;
+      // Filtra para mostrar solo expedientes activos
+      this.expedientes = expedientes.filter(expediente => expediente.activo);
     }, error => {
       console.error('Error al consultar los expedientes:', error);
     });
@@ -74,11 +75,17 @@ export class ExpedientesComponent implements OnInit {
 
   buscarExpediente(): void {
     if (this.busquedaForm.valid) {
-      const codigo = this.busquedaForm.get('codigo')?.value; // Uso de '?' para manejar nulo
+      const codigo = this.busquedaForm.get('codigo')?.value;
       if (codigo) {
         this.expedienteService.getExpedienteByCodigo(codigo).subscribe(
           expediente => {
-            this.expedienteEncontrado = expediente;
+            // Verificar si el expediente está activo
+            if (expediente && expediente.activo) {
+              this.expedienteEncontrado = expediente;
+            } else {
+              console.error('El expediente encontrado no está activo o no existe');
+              this.expedienteEncontrado = null;
+            }
           },
           error => {
             console.error('Error al buscar expediente:', error);

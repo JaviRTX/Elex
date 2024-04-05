@@ -31,8 +31,9 @@ export class FormulariosTiposComponent implements OnInit{
   // Métodos de cargar (consulta) e insertar (inserción)
   cargarTipos(): void {
     this.servicio.consultarTipos().subscribe(datos => {
-      this.tipos = datos
-    })
+      // Aquí aplicamos el filtro para solo mostrar los tipos activos
+      this.tipos = datos.filter(tipo => tipo.activo);
+    });
   }
 
   insertarTipo(): void {
