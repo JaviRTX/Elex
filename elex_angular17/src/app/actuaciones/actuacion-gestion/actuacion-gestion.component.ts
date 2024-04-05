@@ -10,8 +10,9 @@ import { ActuacionService } from '../../services/actuacion.service';
 })
 export class ActuacionGestionComponent implements OnInit {
   consultaForm: FormGroup;
-  actuaciones: Actuacion[] = [];
-  actuacionesFiltradas: Actuacion[] = [];
+  actuaciones: Actuacion[] = []; // Todas las actuaciones cargadas por el GET
+  actuacionesFiltradas: Actuacion[] = []; // Actuaciones filtradas por fecha
+  actuacionesPorId: Actuacion[] = []; // Actuaciones filtradas por ID
   fechaInicio: string = '';
   fechaFin: string = '';
 
@@ -20,7 +21,6 @@ export class ActuacionGestionComponent implements OnInit {
       expedienteId: ['']
     });
   }
-
   ngOnInit(): void {
     // Cargar todas las actuaciones inicialmente o según se requiera
     this.cargarTodasLasActuaciones();
@@ -31,7 +31,7 @@ export class ActuacionGestionComponent implements OnInit {
       (data: Actuacion[]) => {
         this.actuaciones = data;
       },
-      (error: any) => { // Aquí definimos el tipo como 'any'
+      (error) => {
         console.error('Error al obtener todas las actuaciones:', error);
       }
     );
@@ -39,32 +39,35 @@ export class ActuacionGestionComponent implements OnInit {
 
   onSubmit() {
     const expedienteId = this.consultaForm.get('expedienteId')!.value;
-    this.cargarActuaciones(expedienteId);
+    if (expedienteId) {
+      this.cargarActuacionesPorId(expedienteId);
+    }
   }
 
-  cargarActuaciones(id: number) {
+  cargarActuacionesPorId(id: number) {
     this.actuacionService.getActuacionesByExpedienteId(id).subscribe(
       (data: Actuacion[]) => {
-        this.actuaciones = data; // Aquí decides si debes o no filtrar
+        this.actuacionesPorId = data; // Filtrar y mostrar actuaciones por ID
+        // Si necesitas resetear las actuaciones filtradas por fecha puedes descomentar la siguiente línea
+        // this.actuacionesFiltradas = [];
       },
       (error) => {
-        console.error('Error al obtener las actuaciones:', error);
+        console.error('Error al obtener las actuaciones por ID:', error);
       }
     );
   }
 
   filtrarActuacionesPorFecha() {
-    if (!this.fechaInicio || !this.fechaFin) {
-      this.actuacionesFiltradas = [];
-      return;
+    if (this.fechaInicio && this.fechaFin) {
+      const inicio = new Date(this.fechaInicio);
+      const fin = new Date(this.fechaFin);
+
+      this.actuacionesFiltradas = this.actuaciones.filter(actuacion => {
+        const fechaActuacion = new Date(actuacion.fecha);
+        return fechaActuacion >= inicio && fechaActuacion <= fin;
+      });
+      // Si necesitas resetear las actuaciones filtradas por ID puedes descomentar la siguiente línea
+      // this.actuacionesPorId = [];
     }
-
-    const inicio = new Date(this.fechaInicio);
-    const fin = new Date(this.fechaFin);
-
-    this.actuacionesFiltradas = this.actuaciones.filter(actuacion => {
-      const fechaActuacion = new Date(actuacion.fecha);
-      return fechaActuacion >= inicio && fechaActuacion <= fin;
-    });
   }
 }

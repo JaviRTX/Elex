@@ -14,7 +14,7 @@
   </div>
 
   <!-- Formulario para filtrar actuaciones por rango de fechas -->
-  <div class="row mt-4">
+  <div class="row mt-4 align-items-end">
     <div class="col-md-4">
       <label for="fechaInicio">Fecha de Inicio:</label>
       <input type="date" class="form-control" id="fechaInicio" [(ngModel)]="fechaInicio">
@@ -28,8 +28,34 @@
     </div>
   </div>
 
+  <!-- Sección para mostrar las actuaciones filtradas por ID de expediente -->
+  <div *ngIf="actuacionesPorId.length > 0" class="mt-4 overflow-auto">
+    <h5>Resultados de Búsqueda por ID de Expediente</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Descripción</th>
+          <th>Finalizado</th>
+          <th>Fecha</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let actuacion of actuacionesPorId">
+          <td>{{ actuacion.id }}</td>
+          <td>{{ actuacion.descripcion }}</td>
+          <td>{{ actuacion.finalizado ? 'Sí' : 'No' }}</td>
+          <td>{{ actuacion.fecha | date:'yyyy-MM-dd' }}</td>
+          <td>{{ actuacion.activo ? 'Sí' : 'No' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
   <!-- Sección para mostrar las actuaciones filtradas por fecha -->
-  <div *ngIf="actuacionesFiltradas.length > 0" class="mt-4">
+  <div *ngIf="actuacionesFiltradas.length > 0" class="mt-4 overflow-auto">
+    <h5>Resultados de Búsqueda por Rango de Fechas</h5>
     <table class="table">
       <thead>
         <tr>
