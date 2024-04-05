@@ -56,7 +56,7 @@ export class FormulariosTiposComponent implements OnInit{
 
   // Atributo tipo que usamos para actualizar
   tipoParaActualizar: Tipos | null = null;
-  
+
   actualizarTipoFormulario(): void {
     if (this.tipoParaActualizar && this.materia) {
       this.servicio.actualizarTipo(this.tipoParaActualizar.id, this.materia).subscribe(resultado => {
