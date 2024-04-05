@@ -60,4 +60,8 @@ public class ExpedienteService {
 
         return expedienteActualizado;
     }
+
+    public Optional<Expediente> getExpedienteByCodigo(String codigo) {
+        return expedienteRepository.findByCodigo(codigo);
+    }
 }

@@ -1,5 +1,6 @@
 export class Expediente {
   constructor(
+      public id: number,
       public codigo: string,
       public fecha: Date,
       public estado: string, // Ajusta según tu modelo de datos

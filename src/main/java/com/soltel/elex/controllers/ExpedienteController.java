@@ -172,6 +172,17 @@ public Expediente createExpedienteConActuacion(
         return ResponseEntity.ok(actuacionActualizada);
     }
 
+    @GetMapping("/id-por-codigo/{codigo}")
+    @ApiOperation(value = "Obtener un expediente por su código", response = Expediente.class)
+    public ResponseEntity<Expediente> getExpedienteByCodigo(@ApiParam(value = "Código del expediente para buscar", required = true) @PathVariable String codigo) {
+        Optional<Expediente> expedienteOpt = expedienteService.getExpedienteByCodigo(codigo);
+        if (expedienteOpt.isPresent()) {
+            return ResponseEntity.ok(expedienteOpt.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     //DOCUMENTOS
     @GetMapping("/{id}/de-expendiente-por-actuaciones")
     @ApiOperation(value = "Obtener todas las actuaciones de un expediente específico", response = List.class)

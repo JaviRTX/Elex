@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Form, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ExpedienteService } from '../services/expediente.service';
 import { Expediente } from '../models/expediente.model';
 
@@ -9,30 +9,12 @@ import { Expediente } from '../models/expediente.model';
   styleUrls: ['./expediente.component.css']
 })
 export class ExpedientesComponent implements OnInit {
-  // Inicialización directa
-  expedienteForm: FormGroup = this.formBuilder.group({
-    codigo: [''],
-    fecha: [''],
-    estado: [''],
-    opciones: [''],
-    descripcion: [''],
-    tipo: [''],
-    activo: [''],
-    descripcionActuacion: [''],
-    finalizadoActuacion: [''],
-    fechaActuacion: [''],
-    rutaDocumento: [''],
-    tasaDocumento: ['']
-    // Agrega controles de formulario para otros campos
-  });
-  expedientes: Expediente[] = []; // Propiedad para almacenar los expedientes consultados
+  expedienteForm: FormGroup;
+  busquedaForm: FormGroup;
+  expedientes: Expediente[] = [];
+  expedienteEncontrado: Expediente | null = null;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private expedienteService: ExpedienteService
-  ) {}
-
-  ngOnInit(): void {
+  constructor(private formBuilder: FormBuilder, private expedienteService: ExpedienteService) {
     this.expedienteForm = this.formBuilder.group({
       codigo: [''],
       fecha: [''],
@@ -46,12 +28,21 @@ export class ExpedientesComponent implements OnInit {
       fechaActuacion: [''],
       rutaDocumento: [''],
       tasaDocumento: ['']
-      // Agrega controles de formulario para otros campos
+    });
+
+    this.busquedaForm = this.formBuilder.group({
+      codigo: ['']
     });
   }
 
+  ngOnInit(): void {
+    // Puedes añadir más lógica aquí si es necesario
+  }
+
   onSubmit(): void {
+    // Asegúrate de que el modelo Expediente acepta exactamente estos campos y en este orden
     const expediente = new Expediente(
+      this.expedienteForm.value.id,
       this.expedienteForm.value.codigo,
       this.expedienteForm.value.fecha,
       this.expedienteForm.value.estado,
@@ -68,19 +59,37 @@ export class ExpedientesComponent implements OnInit {
 
     this.expedienteService.createExpediente(expediente).subscribe(result => {
       console.log('Expediente creado:', result);
-      // Aquí podrías, por ejemplo, limpiar el formulario o mostrar un mensaje de éxito
     }, error => {
       console.error('Error al crear el expediente:', error);
-      // Aquí manejarías los errores, como mostrar un mensaje de error
     });
   }
 
   consultarExpedientes(): void {
     this.expedienteService.consultarExpedientes().subscribe(expedientes => {
       this.expedientes = expedientes;
-      // Procesa aquí los expedientes consultados
     }, error => {
       console.error('Error al consultar los expedientes:', error);
     });
+  }
+
+  buscarExpediente(): void {
+    if (this.busquedaForm.valid) {
+      const codigo = this.busquedaForm.get('codigo')?.value; // Uso de '?' para manejar nulo
+      if (codigo) {
+        this.expedienteService.getExpedienteByCodigo(codigo).subscribe(
+          expediente => {
+            this.expedienteEncontrado = expediente;
+          },
+          error => {
+            console.error('Error al buscar expediente:', error);
+            this.expedienteEncontrado = null;
+          }
+        );
+      } else {
+        console.error('El código de expediente está vacío');
+      }
+    } else {
+      console.error('Formulario de búsqueda no es válido');
+    }
   }
 }

@@ -37,5 +37,8 @@ export class ExpedienteService {
     return this.http.get<Expediente[]>(this.apiUrl + 'consultar');
   }
 
+  getExpedienteByCodigo(codigo: string): Observable<Expediente> {
+    return this.http.get<Expediente>(`${this.apiUrl}id-por-codigo/${codigo}`);
+  }
   // Añade métodos para GET, PUT, DELETE según sea necesario
 }

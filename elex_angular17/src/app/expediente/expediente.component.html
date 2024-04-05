@@ -66,6 +66,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th>Id</th>
               <th>Código</th>
               <th>Fecha</th>
               <th>Estado</th>
@@ -73,15 +74,12 @@
               <th>Descripción</th>
               <th>Tipo</th>
               <th>Activo</th>
-              <th>Descripción Actuación</th>
               <th>Finalizado Actuación</th>
-              <th>Fecha Actuación</th>
-              <th>Ruta Documento</th>
-              <th>Tasa Documento</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let expediente of expedientes">
+              <td>{{ expediente.id }}</td>
               <td>{{ expediente.codigo }}</td>
               <td>{{ expediente.fecha | date }}</td>
               <td>{{ expediente.estado }}</td>
@@ -89,11 +87,7 @@
               <td>{{ expediente.descripcion }}</td>
               <td>{{ expediente.tipo }}</td>
               <td>{{ expediente.activo ? 'Sí' : 'No' }}</td>
-              <td>{{ expediente.descripcionActuacion }}</td>
               <td>{{ expediente.finalizadoActuacion ? 'Sí' : 'No' }}</td>
-              <td>{{ expediente.fechaActuacion | date }}</td>
-              <td>{{ expediente.rutaDocumento }}</td>
-              <td>{{ expediente.tasaDocumento }}</td>
             </tr>
           </tbody>
         </table>
@@ -101,6 +95,24 @@
     </div>
     <!-- Columna Derecha: Componente de Gestión de Actuaciones -->
     <div class="col-md-6">
+      <form [formGroup]="busquedaForm" (ngSubmit)="buscarExpediente()">
+        <div class="form-group">
+          <label for="codigo">Código del Expediente:</label>
+          <input type="text" id="codigo" class="form-control" formControlName="codigo" placeholder="Ingrese el código">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+      </form>
+
+      <!-- Mostrar los detalles del expediente encontrado -->
+      <div *ngIf="expedienteEncontrado">
+        <h3>Detalles del Expediente</h3>
+        <p><strong>Id:</strong> {{ expedienteEncontrado.id }}</p>
+        <p><strong>Código:</strong> {{ expedienteEncontrado.codigo }}</p>
+        <p><strong>Fecha:</strong> {{ expedienteEncontrado.fecha | date:'mediumDate' }}</p>
+        <p><strong>Estado:</strong> {{ expedienteEncontrado.estado }}</p>
+        <p><strong>Descripción:</strong> {{ expedienteEncontrado.descripcion }}</p>
+        <!-- Añade más detalles del expediente si lo deseas -->
+      </div>
       <app-actuacion-gestion></app-actuacion-gestion>
       <app-documento-gestion></app-documento-gestion>
     </div>
