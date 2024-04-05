@@ -13,11 +13,17 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ExpedientesComponent } from './expediente/expediente.component'; // Asegúrate de que esta ruta sea correcta
 import { ReactiveFormsModule } from '@angular/forms';
+import { ActuacionGestionComponent } from './actuaciones/actuacion-gestion/actuacion-gestion.component';
+import { DocumentoGestionComponent } from './documentos/documento-gestion/documento-gestion.component';
+
 @NgModule({
   declarations: [
     AppComponent,
     FormulariosTiposComponent,
-    ExpedientesComponent // Nombre correcto del componente
+    ExpedientesComponent,
+    ActuacionGestionComponent,
+    DocumentoGestionComponent,
+  
   ],
   imports: [
     BrowserModule,

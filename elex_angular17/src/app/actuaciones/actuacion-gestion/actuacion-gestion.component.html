@@ -1,0 +1,38 @@
+<div class="container mt-3">
+  <h4>Consultar actuación por id de Expediente</h4>
+  <div class="row">
+    <div class="col-md-12">
+      <form [formGroup]="consultaForm" (ngSubmit)="onSubmit()" class="mb-3">
+        <div class="form-group">
+          <label for="expedienteId">ID del Expediente:</label>
+          <input type="number" class="form-control" id="expedienteId" formControlName="expedienteId">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Buscar Actuaciones</button>
+      </form>
+
+      <div *ngIf="actuaciones.length > 0">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Descripción</th>
+              <th>Finalizado</th>
+              <th>Fecha</th>
+              <th>Activo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let actuacion of actuaciones">
+              <td>{{ actuacion.id }}</td>
+              <td>{{ actuacion.descripcion }}</td>
+              <td>{{ actuacion.finalizado ? 'Sí' : 'No' }}</td>
+              <td>{{ actuacion.fecha | date:'yyyy-MM-dd' }}</td>
+              <td>{{ actuacion.activo ? 'Sí' : 'No' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

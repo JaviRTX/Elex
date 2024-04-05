@@ -1,90 +1,108 @@
+
 <section class="container mt-3">
   <h2>Expediente</h2>
-  <form [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
-      <!-- Formulario para expedientes -->
-      <div class="form-group">
+  <div class="row">
+    <!-- Columna Izquierda: Formulario de Expedientes -->
+    <div class="col-md-6">
+
+      <form [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
+        <div class="form-group">
           <label for="codigo">Código:</label>
           <input type="text" class="form-control" id="codigo" formControlName="codigo">
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="fecha">Fecha:</label>
           <input type="date" class="form-control" id="fecha" formControlName="fecha">
-      </div>
-      <div class="form-group">
-        <label for="estado">Estado:</label>
-        <select class="form-control" id="estado" formControlName="estado">
-          <option value="Pendiente">Pendiente</option>
-          <option value="Enviado">Enviado</option>
-          <option value="Erróneo">Erróneo</option>
-        </select>
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
+          <label for="estado">Estado:</label>
+          <select class="form-control" id="estado" formControlName="estado">
+            <option value="Pendiente">Pendiente</option>
+            <option value="Enviado">Enviado</option>
+            <option value="Erróneo">Erróneo</option>
+          </select>
+        </div>
+        <div class="form-group">
           <label for="opciones">Opciones:</label>
           <input type="text" class="form-control" id="opciones" formControlName="opciones">
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="descripcion">Descripción:</label>
           <input type="text" class="form-control" id="descripcion" formControlName="descripcion">
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="tipo">Tipo:</label>
           <input type="number" class="form-control" id="tipo" formControlName="tipo">
-      </div>
-      <div class="form-check">
+        </div>
+        <div class="form-check">
           <input type="checkbox" class="form-check-input" id="activo" formControlName="activo">
           <label class="form-check-label" for="activo">Activo</label>
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="descripcionActuacion">Descripción de la Actuación:</label>
           <input type="text" class="form-control" id="descripcionActuacion" formControlName="descripcionActuacion">
-      </div>
-      <div class="form-check">
+        </div>
+        <div class="form-check">
           <input type="checkbox" class="form-check-input" id="finalizadoActuacion" formControlName="finalizadoActuacion">
           <label class="form-check-label" for="finalizadoActuacion">Finalizado Actuación</label>
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="fechaActuacion">Fecha de Actuación:</label>
           <input type="date" class="form-control" id="fechaActuacion" formControlName="fechaActuacion">
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="rutaDocumento">Ruta del Documento:</label>
           <input type="text" class="form-control" id="rutaDocumento" formControlName="rutaDocumento">
-      </div>
-      <div class="form-group">
+        </div>
+        <div class="form-group">
           <label for="tasaDocumento">Tasa del Documento:</label>
           <input type="number" class="form-control" id="tasaDocumento" formControlName="tasaDocumento">
-      </div>
-      <br/>
-      <button type="submit" class="btn btn-primary">Crear Expediente</button>
-  </form>
-  <!-- Botón para Consultar Expedientes -->
-  <button class="btn btn-secondary mt-3" (click)="consultarExpedientes()">Consultar Expedientes</button>
-
-  <!-- Tabla para Mostrar Expedientes Consultados -->
-  <div *ngIf="expedientes.length > 0" class="mt-3">
-      <table class="table">
+        </div>
+        <br/>
+        <button type="submit" class="btn btn-primary">Crear Expediente</button>
+      </form>
+      <button class="btn btn-secondary mt-3" (click)="consultarExpedientes()">Consultar Expedientes</button>
+      <div *ngIf="expedientes.length > 0" class="mt-3">
+        <table class="table">
           <thead>
-              <tr>
-                <th>Código</th>
-                <th>Fecha</th>
-                <th>Estado</th>
-                <th>Opciones</th>
-                <th>Descripción</th>
-                <th>Tipo</th>
-                <th>Activo</th>
-              </tr>
+            <tr>
+              <th>Código</th>
+              <th>Fecha</th>
+              <th>Estado</th>
+              <th>Opciones</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Activo</th>
+              <th>Descripción Actuación</th>
+              <th>Finalizado Actuación</th>
+              <th>Fecha Actuación</th>
+              <th>Ruta Documento</th>
+              <th>Tasa Documento</th>
+            </tr>
           </thead>
           <tbody>
-              <tr *ngFor="let expediente of expedientes">
-                <td>{{ expediente.codigo }}</td>
-                <td>{{ expediente.fecha | date }}</td>
-                <td>{{ expediente.estado }}</td>
-                <td>{{ expediente.opciones }}</td>
-                <td>{{ expediente.descripcion }}</td>
-                <td>{{ expediente.tipo }}</td>
-                <td>{{ expediente.activo ? 'Sí' : 'No' }}</td>
-              </tr>
+            <tr *ngFor="let expediente of expedientes">
+              <td>{{ expediente.codigo }}</td>
+              <td>{{ expediente.fecha | date }}</td>
+              <td>{{ expediente.estado }}</td>
+              <td>{{ expediente.opciones }}</td>
+              <td>{{ expediente.descripcion }}</td>
+              <td>{{ expediente.tipo }}</td>
+              <td>{{ expediente.activo ? 'Sí' : 'No' }}</td>
+              <td>{{ expediente.descripcionActuacion }}</td>
+              <td>{{ expediente.finalizadoActuacion ? 'Sí' : 'No' }}</td>
+              <td>{{ expediente.fechaActuacion | date }}</td>
+              <td>{{ expediente.rutaDocumento }}</td>
+              <td>{{ expediente.tasaDocumento }}</td>
+            </tr>
           </tbody>
-      </table>
+        </table>
+      </div>
+    </div>
+    <!-- Columna Derecha: Componente de Gestión de Actuaciones -->
+    <div class="col-md-6">
+      <app-actuacion-gestion></app-actuacion-gestion>
+      <app-documento-gestion></app-documento-gestion>
+    </div>
   </div>
 </section>
