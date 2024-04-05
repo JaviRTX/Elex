@@ -47,7 +47,8 @@ export class ActuacionGestionComponent implements OnInit {
   cargarActuacionesPorId(id: number) {
     this.actuacionService.getActuacionesByExpedienteId(id).subscribe(
       (data: Actuacion[]) => {
-        this.actuacionesPorId = data; // Filtrar y mostrar actuaciones por ID
+        // Filtrar para mostrar solo actuaciones activas por ID
+        this.actuacionesPorId = Actuacion.filtrarActivas(data);
         // Si necesitas resetear las actuaciones filtradas por fecha puedes descomentar la siguiente línea
         // this.actuacionesFiltradas = [];
       },
@@ -64,7 +65,7 @@ export class ActuacionGestionComponent implements OnInit {
 
       this.actuacionesFiltradas = this.actuaciones.filter(actuacion => {
         const fechaActuacion = new Date(actuacion.fecha);
-        return fechaActuacion >= inicio && fechaActuacion <= fin;
+        return fechaActuacion >= inicio && fechaActuacion <= fin && actuacion.activo;
       });
       // Si necesitas resetear las actuaciones filtradas por ID puedes descomentar la siguiente línea
       // this.actuacionesPorId = [];
