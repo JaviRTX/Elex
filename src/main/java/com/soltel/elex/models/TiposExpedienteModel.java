@@ -19,16 +19,19 @@ public class TiposExpedienteModel {
     @Column (name = "materia")
     private String materia;
 
+    @Column (name = "activo")
+    private Boolean activo;
+    
     // Constructores
     public TiposExpedienteModel() { }
-    
-	public TiposExpedienteModel(int id, String materia) {
-		super();
-		this.id = id;
-		this.materia = materia;
-	}
+	
+	public TiposExpedienteModel(int id, String materia, Boolean activo) {
+        this.id = id;
+        this.materia = materia;
+        this.activo = activo;
+    }
 
-	// Getters y setters
+    // Getters y setters
     public int getId() {
         return id;
     }
@@ -44,4 +47,14 @@ public class TiposExpedienteModel {
     public void setMateria(String materia) {
         this.materia = materia;
     }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
+    }
+
+
 }

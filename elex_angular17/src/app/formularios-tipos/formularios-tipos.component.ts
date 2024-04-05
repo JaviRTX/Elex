@@ -81,10 +81,11 @@ export class FormulariosTiposComponent implements OnInit{
   // Y el borrado...
   borrarTipo(id: number): void {
     if (confirm("¿Estás seguro de querer borrar este tipo?")) {
-      this.servicio.borrarTipo(id).subscribe(() => {
-        this.mensaje = "Tipo borrado";
-        this.cargarTipos();
-      });
+        // Llamar a un servicio que realice el borrado lógico
+        this.servicio.borrarLogicoTipo(id).subscribe(() => {
+            this.mensaje = "Tipo borrado lógicamente";
+            this.cargarTipos();
+        });
     }
-  }
+}
 }

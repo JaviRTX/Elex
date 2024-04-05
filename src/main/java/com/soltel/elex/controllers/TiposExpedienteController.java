@@ -32,6 +32,10 @@ public class TiposExpedienteController {
     public TiposExpedienteModel insertarTipo(@PathVariable String materia) {
         TiposExpedienteModel tipo = new TiposExpedienteModel();
         tipo.setMateria(materia);
+
+        // Establecer el atributo activo a 1
+        tipo.setActivo(true);
+
         tipo = servicioTipo.insertarTipo(tipo);
         return tipo;
     }
@@ -42,6 +46,10 @@ public class TiposExpedienteController {
         if (tipo.isPresent()) {
             TiposExpedienteModel tipoActualizado = tipo.get();
             tipoActualizado.setMateria(materia);
+
+            // Establecer el atributo activo a 1
+            tipoActualizado.setActivo(true);
+
             TiposExpedienteModel guardaTipo = servicioTipo.actualizarTipo(tipoActualizado);
             return ResponseEntity.ok(guardaTipo);
         } else {
@@ -58,5 +66,21 @@ public class TiposExpedienteController {
                     return ResponseEntity.ok().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/borrarLogico/{id}")
+    public ResponseEntity<?> borrarLogicoTipo(@PathVariable int id) {
+        Optional<TiposExpedienteModel> tipo = servicioTipo.obtenerTipoPorId(id);
+        if (tipo.isPresent()) {
+            TiposExpedienteModel tipoActualizado = tipo.get();
+
+            // Establecer el atributo activo a 0 para representar el borrado lógico
+            tipoActualizado.setActivo(false);
+
+            TiposExpedienteModel tipoBorrado = servicioTipo.actualizarTipo(tipoActualizado);
+            return ResponseEntity.ok(tipoBorrado);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tipo no encontrado");
+        }
     }
 }

@@ -53,4 +53,9 @@ export class TiposService {
     const url = `${this.baseURL}/borrar/${id}`;
     return this.http.delete<void>(url);
   }
+
+  borrarLogicoTipo(id: number): Observable<any> {
+    return this.http.put(`${this.baseURL}/borrarLogico/${id}`, {});
+  }
+
 }
