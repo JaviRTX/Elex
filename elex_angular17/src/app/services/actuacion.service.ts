@@ -14,4 +14,8 @@ export class ActuacionService {
   getActuacionesByExpedienteId(id: number): Observable<Actuacion[]> {
     return this.http.get<Actuacion[]>(`${this.apiUrl}/api/expedientes/${id}/de-expendiente-por-actuaciones`);
   }
+
+  getAllActuaciones(): Observable<Actuacion[]> {
+    return this.http.get<Actuacion[]>(`${this.apiUrl}/actuaciones/consultar`); // Ajusta la URL según tu back-end
+  }
 }
