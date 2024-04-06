@@ -33,5 +33,13 @@ public Optional<Actuacion> getActuacionById(Integer id) {
 public List<Actuacion> findAll() {
     return actuacionRepository.findAll();
 }
+
+public Actuacion findById(Integer id) {
+    return actuacionRepository.findById(id).orElse(null);
+}
+
+public Actuacion save(Actuacion actuacion) {
+    return actuacionRepository.save(actuacion);
+}
 }
 // Otros métodos según sea necesario
