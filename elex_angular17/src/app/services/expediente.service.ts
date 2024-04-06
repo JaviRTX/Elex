@@ -42,7 +42,7 @@ export class ExpedienteService {
   }
 
   borrarLogico(expedienteId: number): Observable<Expediente> {
-    const url = `${this.apiUrl}/borrar/{Id}`;
+    const url = `${this.apiUrl}{id}/borrar`;
     return this.http.put<Expediente>(url, {});
   }
   // Añade métodos para GET, PUT, DELETE según sea necesario
