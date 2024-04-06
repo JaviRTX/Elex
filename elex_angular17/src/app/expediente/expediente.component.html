@@ -99,13 +99,18 @@
         </table>
       </div>
     </div>
-    <!-- Columna Derecha: Componente de Gestión de Actuaciones -->
+    <!-- Columna Derecha: Búsqueda de Expedientes y Componentes de Gestión -->
     <div class="col-md-6">
       <form [formGroup]="busquedaForm" (ngSubmit)="buscarExpediente()">
-        <!-- Resto del formulario de búsqueda -->
+        <div class="form-group">
+          <label for="codigo">Código del Expediente:</label>
+          <input type="text" id="codigo" class="form-control" formControlName="codigo" placeholder="Ingrese el código">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
       </form>
+
       <!-- Mostrar los detalles del expediente encontrado -->
-      <div *ngIf="expedienteEncontrado">
+      <div *ngIf="expedienteEncontrado" class="mt-3">
         <h3>Detalles del Expediente</h3>
         <p><strong>Id:</strong> {{ expedienteEncontrado.id }}</p>
         <p><strong>Código:</strong> {{ expedienteEncontrado.codigo }}</p>
@@ -114,6 +119,8 @@
         <p><strong>Descripción:</strong> {{ expedienteEncontrado.descripcion }}</p>
         <!-- Añade más detalles del expediente si lo deseas -->
       </div>
+
+      <!-- Componentes de Gestión Adicionales -->
       <app-actuacion-gestion></app-actuacion-gestion>
       <app-documento-gestion></app-documento-gestion>
     </div>
