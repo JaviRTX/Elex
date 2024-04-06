@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -134,18 +135,37 @@ public Expediente createExpedienteConActuacion(
         return ResponseEntity.ok(expedienteActualizado);
     }
 
-    @DeleteMapping("/{id}/delete")
-    @ApiOperation(value = "Eliminar un expediente")
-    public void deleteExpediente(@ApiParam(value = "ID del expediente para eliminar", required = true) @PathVariable int id) {
-        expedienteService.deleteExpediente(id);
+    @PutMapping("/{id}/delete")
+    @ApiOperation(value = "Borrar un expediente de forma lógica")
+    public ResponseEntity<Expediente> deleteExpedienteLogically(
+            @ApiParam(value = "ID del expediente para borrar lógicamente", required = true)
+            @PathVariable int id) {
+
+        Expediente expediente = expedienteService.borrarLogico(id);
+        if (expediente != null && !expediente.getActivo()) {
+            return ResponseEntity.ok(expediente); // Expediente desactivado exitosamente
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            // Puedes cambiar esto por una respuesta más adecuada en caso de que no se pueda desactivar
+        }
     }
 
+
+    /*@PutMapping("/{id}/borrar")
     @ApiOperation(value = "Borrar un expediente de forma lógica")
-    @PutMapping("{id}/borrar")
-    public ResponseEntity<Expediente> borrarLogico(@PathVariable(value = "id") Integer expedienteId) {
-        Expediente expediente = expedienteService.borrarLogico(expedienteId);
-        return ResponseEntity.ok().body(expediente);
+    public ResponseEntity<Expediente> deleteExpedienteLogically(
+        @ApiParam(value = "ID del expediente para borrar lógicamente", required = true)
+        @PathVariable int id) {
+    
+    Expediente expediente = expedienteService.borrarLogico(id);
+    if (expediente != null) {
+        return ResponseEntity.ok(expediente);
+    } else {
+        return ResponseEntity.notFound().build();
     }
+    }
+    */
+
     //ACTUACIONES
     @PutMapping("/{expedienteId}/actuaciones/{actuacionId}")
     @ApiOperation(value = "Actualizar una actuación de un expediente específico", response = Actuacion.class)

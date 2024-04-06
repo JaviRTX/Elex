@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ExpedienteService {
-  private apiUrl = 'http://localhost:8101/api/expedientes/';
+  private apiUrl = 'http://localhost:8101';
 
   constructor(private http: HttpClient) { }
 
@@ -34,16 +34,17 @@ export class ExpedienteService {
   }
 
   consultarExpedientes(): Observable<Expediente[]> {
-    return this.http.get<Expediente[]>(this.apiUrl + 'consultar');
+    return this.http.get<Expediente[]>(`${this.apiUrl}/api/expedientes/consultar`);
   }
 
   getExpedienteByCodigo(codigo: string): Observable<Expediente> {
-    return this.http.get<Expediente>(`${this.apiUrl}id-por-codigo/${codigo}`);
+    return this.http.get<Expediente>(`${this.apiUrl}/api/expedientes/id-por-codigo/${codigo}`);
   }
 
-  borrarLogico(expedienteId: number): Observable<Expediente> {
-    const url = `${this.apiUrl}{id}/borrar`;
-    return this.http.put<Expediente>(url, {});
+  borrarLogico(id: number): Observable<Expediente> {
+    const url = `${this.apiUrl}/api/expedientes/${id}/delete`;
+    return this.http.put<Expediente>(url, {}); // Usando PUT
   }
+
   // Añade métodos para GET, PUT, DELETE según sea necesario
 }
