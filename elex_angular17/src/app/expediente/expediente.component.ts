@@ -99,4 +99,17 @@ export class ExpedientesComponent implements OnInit {
       console.error('Formulario de búsqueda no es válido');
     }
   }
+
+  borrarLogico(expedienteId: number): void {
+    this.expedienteService.borrarLogico(expedienteId).subscribe(
+      (expedienteActualizado) => {
+        console.log('Expediente borrado lógicamente:', expedienteActualizado);
+        // Puedes actualizar la lista de expedientes o realizar otras acciones
+        this.consultarExpedientes();
+      },
+      (error) => {
+        console.error('Error al borrar el expediente:', error);
+      }
+    );
+}
 }

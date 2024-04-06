@@ -40,5 +40,10 @@ export class ExpedienteService {
   getExpedienteByCodigo(codigo: string): Observable<Expediente> {
     return this.http.get<Expediente>(`${this.apiUrl}id-por-codigo/${codigo}`);
   }
+
+  borrarLogico(expedienteId: number): Observable<Expediente> {
+    const url = `${this.apiUrl}/borrar/{Id}`;
+    return this.http.put<Expediente>(url, {});
+  }
   // Añade métodos para GET, PUT, DELETE según sea necesario
 }

@@ -1,10 +1,8 @@
-
 <section class="container mt-3">
   <h2>Expediente</h2>
   <div class="row">
     <!-- Columna Izquierda: Formulario de Expedientes -->
     <div class="col-md-6">
-
       <form [formGroup]="expedienteForm" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="codigo">Código:</label>
@@ -61,7 +59,9 @@
         <br/>
         <button type="submit" class="btn btn-primary">Crear Expediente</button>
       </form>
-      <button class="btn btn-secondary mt-3" (click)="consultarExpedientes()">Consultar Expedientes</button>
+      <button class="btn btn-secondary mt-3" (click)="consultarExpedientes()">
+        Consultar Expedientes
+      </button>
       <div *ngIf="expedientes.length > 0" class="mt-3 table-responsive">
         <table class="table">
           <thead>
@@ -75,6 +75,7 @@
               <th>Tipo</th>
               <th>Activo</th>
               <th>Finalizado Actuación</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -88,6 +89,11 @@
               <td>{{ expediente.tipo }}</td>
               <td>{{ expediente.activo ? 'Sí' : 'No' }}</td>
               <td>{{ expediente.finalizadoActuacion ? 'Sí' : 'No' }}</td>
+              <td>
+                <button class="btn btn-danger" (click)="borrarLogico(expediente.id)">
+                  Borrar
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -96,13 +102,8 @@
     <!-- Columna Derecha: Componente de Gestión de Actuaciones -->
     <div class="col-md-6">
       <form [formGroup]="busquedaForm" (ngSubmit)="buscarExpediente()">
-        <div class="form-group">
-          <label for="codigo">Código del Expediente:</label>
-          <input type="text" id="codigo" class="form-control" formControlName="codigo" placeholder="Ingrese el código">
-        </div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
+        <!-- Resto del formulario de búsqueda -->
       </form>
-
       <!-- Mostrar los detalles del expediente encontrado -->
       <div *ngIf="expedienteEncontrado">
         <h3>Detalles del Expediente</h3>
