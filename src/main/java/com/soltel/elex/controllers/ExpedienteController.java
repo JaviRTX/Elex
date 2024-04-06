@@ -140,6 +140,12 @@ public Expediente createExpedienteConActuacion(
         expedienteService.deleteExpediente(id);
     }
 
+    @ApiOperation(value = "Borrar un expediente de forma lógica")
+    @PutMapping("/borrar/{id}")
+    public ResponseEntity<Expediente> borrarLogico(@PathVariable(value = "id") Integer expedienteId) {
+        Expediente expediente = expedienteService.borrarLogico(expedienteId);
+        return ResponseEntity.ok().body(expediente);
+    }
     //ACTUACIONES
     @PutMapping("/{expedienteId}/actuaciones/{actuacionId}")
     @ApiOperation(value = "Actualizar una actuación de un expediente específico", response = Actuacion.class)

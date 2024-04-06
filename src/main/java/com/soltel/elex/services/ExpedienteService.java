@@ -60,8 +60,20 @@ public class ExpedienteService {
 
         return expedienteActualizado;
     }
-
+    
+    public Expediente borrarLogico(Integer id) {
+        Expediente expediente = expedienteRepository.findById(id).orElseThrow(
+            () -> new ResourceNotFoundException("Expediente no encontrado para este id :: " + id)
+        );
+        expediente.setActivo(false);
+        return expedienteRepository.save(expediente);
+    }
     public Optional<Expediente> getExpedienteByCodigo(String codigo) {
         return expedienteRepository.findByCodigo(codigo);
+    }
+    public class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
     }
 }
