@@ -1,33 +1,61 @@
 <section class="container mt-3">
-  <h4>Consulta de Documentos por Expediente</h4>
-  <form [formGroup]="consultaForm" (ngSubmit)="onSubmit()" class="mb-3">
-    <div class="form-group">
-      <label for="expedienteId">ID del Expediente:</label>
-      <input type="number" id="expedienteId" formControlName="expedienteId" class="form-control">
-    </div>
-    <br>
-    <button type="submit" class="btn btn-primary">Buscar Documentos</button>
-  </form>
+  <div class="row">
+    <!-- Primera columna: Consulta de documentos y tabla de resultados -->
+    <div class="col-md-6">
+      <h4>Consulta de Documentos por Expediente</h4>
+      <form [formGroup]="consultaForm" (ngSubmit)="onSubmit()" class="mb-3">
+        <div class="form-group">
+          <label for="expedienteId">ID del Expediente:</label>
+          <input type="number" id="expedienteId" formControlName="expedienteId" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar Documentos</button>
+      </form>
 
-  <div *ngIf="documentos.length > 0">
-    <h3>Documentos Encontrados</h3>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Ruta</th>
-          <th>Tasa</th>
-          <th>Activo</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let documento of documentos">
-          <td>{{ documento.id }}</td>
-          <td>{{ documento.ruta }}</td>
-          <td>{{ documento.tasa }}</td>
-          <td>{{ documento.activo ? 'Sí' : 'No' }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <div *ngIf="documentos.length > 0">
+        <h3>Documentos Encontrados</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Ruta</th>
+              <th>Tasa</th>
+              <th>Activo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let documento of documentos">
+              <td>{{ documento.id }}</td>
+              <td>{{ documento.ruta }}</td>
+              <td>{{ documento.tasa }}</td>
+              <td>{{ documento.activo ? 'Sí' : 'No' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Segunda columna: Formulario de actualización de documentos -->
+    <div class="col-md-6">
+      <h4>Actualizar Documento</h4>
+      <form [formGroup]="actualizacionForm" (ngSubmit)="onSubmitActualizacion()" class="mb-3">
+        <div class="form-group">
+          <label for="updateId">ID del Documento:</label>
+          <input id="updateId" formControlName="id" type="number" placeholder="ID del Documento" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="ruta">Ruta del Documento:</label>
+          <input id="ruta" formControlName="ruta" type="text" placeholder="Ruta del Documento" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for="tasa">Tasa del Documento:</label>
+          <input id="tasa" formControlName="tasa" type="number" placeholder="Tasa del Documento" class="form-control">
+        </div>
+        <div class="form-group form-check">
+          <input id="activo" formControlName="activo" type="checkbox" class="form-check-input">
+          <label for="activo" class="form-check-label">Activo</label>
+        </div>
+        <button type="submit" class="btn btn-success">Actualizar Documento</button>
+      </form>
+    </div>
   </div>
 </section>

@@ -25,17 +25,18 @@ public class DocumentoController {
    
     @PutMapping("/{id}/actualizar")
     public ResponseEntity<?> updateDocumento(@PathVariable Integer id, @RequestBody Documento updatedDocumento) {
-    return documentoRepository.findById(id)
-            .map(documento -> {
-                documento.setRuta(updatedDocumento.getRuta());
-                documento.setTasa(updatedDocumento.getTasa());
-                documento.setActivo(updatedDocumento.getActivo()); // Corrección aquí
-                // Actualizar cualquier otro campo que desees
-                documentoRepository.save(documento);
-                return ResponseEntity.ok().build();
-            })
-            .orElse(ResponseEntity.notFound().build());
+        return documentoRepository.findById(id)
+                .map(documento -> {
+                    documento.setRuta(updatedDocumento.getRuta());
+                    documento.setTasa(updatedDocumento.getTasa());
+                    documento.setActivo(updatedDocumento.getActivo());
+                    // Actualizar cualquier otro campo que desees
+                    documentoRepository.save(documento);
+                    return ResponseEntity.ok().build();
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
+
     @PutMapping("/{id}/eliminar")
     public ResponseEntity<?> eliminarDocumento(@PathVariable("id") Integer id) {
         Optional<Documento> documentoOptional = documentoRepository.findById(id);
