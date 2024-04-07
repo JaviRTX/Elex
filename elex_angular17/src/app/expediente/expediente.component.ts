@@ -121,4 +121,14 @@ export class ExpedientesComponent implements OnInit {
         error => console.error('Error al actualizar el expediente:', error)
       );
   }
+
+  mostrarPutModalExpediente: boolean = false;
+
+  abrirPutModalExpediente(): void {
+    this.mostrarPutModalExpediente = true;
+  }
+
+  cerrarPutModalExpediente(): void {
+    this.mostrarPutModalExpediente = false;
+  }
 }
