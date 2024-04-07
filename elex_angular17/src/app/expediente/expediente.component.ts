@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ExpedienteService } from '../services/expediente.service';
 import { Expediente } from '../models/expediente.model';
-
 @Component({
   selector: 'app-expedientes',
   templateUrl: './expediente.component.html',
@@ -13,7 +12,6 @@ export class ExpedientesComponent implements OnInit {
   busquedaForm: FormGroup;
   expedientes: Expediente[] = [];
   expedienteEncontrado: Expediente | null = null;
-
   constructor(private formBuilder: FormBuilder, private expedienteService: ExpedienteService) {
     this.expedienteForm = this.formBuilder.group({
       codigo: [''],
@@ -29,16 +27,13 @@ export class ExpedientesComponent implements OnInit {
       rutaDocumento: [''],
       tasaDocumento: ['']
     });
-
     this.busquedaForm = this.formBuilder.group({
       codigo: ['']
     });
   }
-
   ngOnInit(): void {
     // Puedes añadir más lógica aquí si es necesario
   }
-
   onSubmit(): void {
     // Asegúrate de que el modelo Expediente acepta exactamente estos campos y en este orden
     const expediente = new Expediente(
@@ -56,14 +51,12 @@ export class ExpedientesComponent implements OnInit {
       this.expedienteForm.value.rutaDocumento,
       this.expedienteForm.value.tasaDocumento
     );
-
     this.expedienteService.createExpediente(expediente).subscribe(result => {
       console.log('Expediente creado:', result);
     }, error => {
       console.error('Error al crear el expediente:', error);
     });
   }
-
   consultarExpedientes(): void {
     this.expedienteService.consultarExpedientes().subscribe(expedientes => {
       // Filtra para mostrar solo expedientes activos
@@ -72,7 +65,6 @@ export class ExpedientesComponent implements OnInit {
       console.error('Error al consultar los expedientes:', error);
     });
   }
-
   buscarExpediente(): void {
     if (this.busquedaForm.valid) {
       const codigo = this.busquedaForm.get('codigo')?.value;
@@ -99,7 +91,6 @@ export class ExpedientesComponent implements OnInit {
       console.error('Formulario de búsqueda no es válido');
     }
   }
-
   borrarLogico(expedienteId: number): void {
     this.expedienteService.borrarLogico(expedienteId).subscribe(
       (expedienteActualizado) => {
@@ -111,16 +102,8 @@ export class ExpedientesComponent implements OnInit {
         console.error('Error al borrar el expediente:', error);
       }
     );
-  }
+}
 
-  actualizarExpediente(): void {
-    const expediente: Expediente = this.expedienteForm.value;
-    this.expedienteService.updateExpediente(expediente.id, expediente)
-      .subscribe(
-        result => console.log('Expediente actualizado:', result),
-        error => console.error('Error al actualizar el expediente:', error)
-      );
-  }
 
   mostrarPutModalExpediente: boolean = false;
 
@@ -130,5 +113,14 @@ export class ExpedientesComponent implements OnInit {
 
   cerrarPutModalExpediente(): void {
     this.mostrarPutModalExpediente = false;
+  }
+
+  actualizarExpediente(): void {
+    const expediente: Expediente = this.expedienteForm.value;
+    this.expedienteService.updateExpediente(expediente.id, expediente)
+      .subscribe(
+        result => console.log('Expediente actualizado:', result),
+        error => console.error('Error al actualizar el expediente:', error)
+      );
   }
 }

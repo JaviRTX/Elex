@@ -30,7 +30,7 @@ export class ExpedienteService {
       .set('rutaDocumento', expediente.rutaDocumento)
       .set('tasaDocumento', expediente.tasaDocumento.toString()); // Convertir a string
 
-    return this.http.post<Expediente>(`${this.apiUrl}insertar`, params);
+    return this.http.post<Expediente>(`${this.apiUrl}/api/expedientes/insertar`, params);
   }
 
   consultarExpedientes(): Observable<Expediente[]> {
@@ -47,7 +47,7 @@ export class ExpedienteService {
   }
 
   updateExpediente(id: number, expediente: Expediente): Observable<Expediente> {
-    return this.http.put<Expediente>(`${this.apiUrl}/${id}/actualizar`, expediente);
+    return this.http.put<Expediente>(`${this.apiUrl}/api/expedientes/${id}/actualizar`, expediente);
   }
   // Añade métodos para GET, PUT, DELETE según sea necesario
 }
