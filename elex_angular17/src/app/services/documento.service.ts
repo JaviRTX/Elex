@@ -15,5 +15,8 @@ export class DocumentoService {
     return this.http.get<Documento[]>(`${this.apiBaseUrl}/api/expedientes/${id}/de-expendiente-por-documentos`);
   }
 
+  actualizarDocumento(id: number, documento: Documento): Observable<any> {
+    return this.http.put<Documento>(`${this.apiBaseUrl}/documentos/${id}/actualizar`, documento);
+  }
   // ...otros métodos...
 }
