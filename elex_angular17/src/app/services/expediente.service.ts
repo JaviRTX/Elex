@@ -46,5 +46,8 @@ export class ExpedienteService {
     return this.http.put<Expediente>(url, {}); // Usando PUT
   }
 
+  updateExpediente(id: number, expediente: Expediente): Observable<Expediente> {
+    return this.http.put<Expediente>(`${this.apiUrl}/${id}/actualizar`, expediente);
+  }
   // Añade métodos para GET, PUT, DELETE según sea necesario
 }

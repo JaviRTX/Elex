@@ -111,5 +111,14 @@ export class ExpedientesComponent implements OnInit {
         console.error('Error al borrar el expediente:', error);
       }
     );
-}
+  }
+
+  actualizarExpediente(): void {
+    const expediente: Expediente = this.expedienteForm.value;
+    this.expedienteService.updateExpediente(expediente.id, expediente)
+      .subscribe(
+        result => console.log('Expediente actualizado:', result),
+        error => console.error('Error al actualizar el expediente:', error)
+      );
+  }
 }
