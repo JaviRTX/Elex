@@ -23,7 +23,7 @@ public class DocumentoController {
         return documentoService.findAll();
     }
    
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/actualizar")
     public ResponseEntity<?> updateDocumento(@PathVariable Integer id, @RequestBody Documento updatedDocumento) {
         return documentoRepository.findById(id)
                 .map(documento -> {

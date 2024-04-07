@@ -20,7 +20,7 @@ public class ActuacionController {
         return actuacionService.findAll();
     }
     
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/actualizar")
     public ResponseEntity<Actuacion> editarActuacion(@PathVariable("id") Integer id, @RequestBody Actuacion actuacion) {
         Actuacion actuacionExistente = actuacionService.findById(id);
         
@@ -31,13 +31,14 @@ public class ActuacionController {
         actuacionExistente.setDescripcion(actuacion.getDescripcion());
         actuacionExistente.setFinalizado(actuacion.getFinalizado());
         actuacionExistente.setFecha(actuacion.getFecha());
+        actuacionExistente.setActivo(actuacion.getActivo());
         // Si necesitas actualizar más campos, hazlo aquí
 
         Actuacion actuacionActualizada = actuacionService.save(actuacionExistente);
         return new ResponseEntity<>(actuacionActualizada, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/eliminar")
+    /*@PutMapping("/{id}/eliminar")
     public ResponseEntity<Void> eliminarActuacion(@PathVariable("id") Integer id) {
         Actuacion actuacionExistente = actuacionService.findById(id);
         
@@ -50,5 +51,5 @@ public class ActuacionController {
         actuacionService.save(actuacionExistente); // Guardamos la actuación actualizada
 
         return new ResponseEntity<>(HttpStatus.OK); // Respondemos con éxito sin contenido
-    }
+    }*/
 }

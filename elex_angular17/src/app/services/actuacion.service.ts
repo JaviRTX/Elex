@@ -18,4 +18,8 @@ export class ActuacionService {
   getAllActuaciones(): Observable<Actuacion[]> {
     return this.http.get<Actuacion[]>(`${this.apiUrl}/actuaciones/consultar`); // Ajusta la URL según tu back-end
   }
+
+  editarActuacion(id: number, actuacion: Actuacion): Observable<Actuacion> {
+    return this.http.put<Actuacion>(`${this.apiUrl}/actuaciones/${id}/actualizar`, actuacion);
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Actuacion } from '../../models/actuacion.model';
 import { ActuacionService } from '../../services/actuacion.service';
 
@@ -10,9 +10,10 @@ import { ActuacionService } from '../../services/actuacion.service';
 })
 export class ActuacionGestionComponent implements OnInit {
   consultaForm: FormGroup;
-  actuaciones: Actuacion[] = []; // Todas las actuaciones cargadas por el GET
-  actuacionesFiltradas: Actuacion[] = []; // Actuaciones filtradas por fecha
-  actuacionesPorId: Actuacion[] = []; // Actuaciones filtradas por ID
+  actuacionForm: FormGroup; // Añadido
+  actuaciones: Actuacion[] = [];
+  actuacionesFiltradas: Actuacion[] = [];
+  actuacionesPorId: Actuacion[] = [];
   fechaInicio: string = '';
   fechaFin: string = '';
 
@@ -20,9 +21,18 @@ export class ActuacionGestionComponent implements OnInit {
     this.consultaForm = this.formBuilder.group({
       expedienteId: ['']
     });
+
+    // Añadido: Definición del actuacionForm
+    this.actuacionForm = this.formBuilder.group({
+      id: ['', Validators.required],
+      descripcion: ['', Validators.required],
+      finalizado: [false, Validators.required],
+      fecha: ['', Validators.required]
+      // Agrega otros campos necesarios
+    });
   }
+
   ngOnInit(): void {
-    // Cargar todas las actuaciones inicialmente o según se requiera
     this.cargarTodasLasActuaciones();
   }
 
@@ -69,6 +79,30 @@ export class ActuacionGestionComponent implements OnInit {
       });
       // Si necesitas resetear las actuaciones filtradas por ID puedes descomentar la siguiente línea
       // this.actuacionesPorId = [];
+    }
+  }
+
+  actualizarActuacion() {
+    if (this.actuacionForm.valid) {
+      // Crear una copia del valor del formulario
+      const actuacionData = { ...this.actuacionForm.value };
+
+      // Asegurarse de que el campo 'activo' tenga un valor booleano
+      // Si es undefined o null, se fuerza a false
+      actuacionData.activo = actuacionData.activo ?? false;
+
+      this.actuacionService.editarActuacion(actuacionData.id, actuacionData).subscribe({
+        next: (actuacionActualizada) => {
+          console.log('Actuación actualizada', actuacionActualizada);
+          // Acciones post actualización
+        },
+        error: (error) => {
+          console.error('Error al actualizar la actuación', error);
+          // Acciones post error
+        }
+      });
+    } else {
+      console.error('El formulario de actuación no es válido');
     }
   }
 }
