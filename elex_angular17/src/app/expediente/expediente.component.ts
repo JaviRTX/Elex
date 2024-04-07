@@ -12,6 +12,9 @@ export class ExpedientesComponent implements OnInit {
   busquedaForm: FormGroup;
   expedientes: Expediente[] = [];
   expedienteEncontrado: Expediente | null = null;
+  mostrarPutModalExpediente: boolean = false;
+  expedienteSeleccionadoParaActualizar: Expediente | null = null;
+
   constructor(private formBuilder: FormBuilder, private expedienteService: ExpedienteService) {
     this.expedienteForm = this.formBuilder.group({
       codigo: [''],
@@ -27,11 +30,14 @@ export class ExpedientesComponent implements OnInit {
       rutaDocumento: [''],
       tasaDocumento: ['']
     });
+
     this.busquedaForm = this.formBuilder.group({
       codigo: ['']
     });
   }
+
   ngOnInit(): void {
+    this.consultarExpedientes();
     // Puedes añadir más lógica aquí si es necesario
   }
   onSubmit(): void {
@@ -91,6 +97,7 @@ export class ExpedientesComponent implements OnInit {
       console.error('Formulario de búsqueda no es válido');
     }
   }
+
   borrarLogico(expedienteId: number): void {
     this.expedienteService.borrarLogico(expedienteId).subscribe(
       (expedienteActualizado) => {
@@ -105,22 +112,43 @@ export class ExpedientesComponent implements OnInit {
 }
 
 
-  mostrarPutModalExpediente: boolean = false;
+abrirPutModalExpediente(expediente: Expediente): void {
+  // Asignar el expediente seleccionado para actualizar
+  this.expedienteSeleccionadoParaActualizar = { ...expediente };
+  // Abrir el modal de actualización
+  this.mostrarPutModalExpediente = true;
+}
 
-  abrirPutModalExpediente(): void {
-    this.mostrarPutModalExpediente = true;
-  }
+cerrarPutModalExpediente(): void {
+  // Cerrar el modal de actualización
+  this.mostrarPutModalExpediente = false;
+}
 
-  cerrarPutModalExpediente(): void {
-    this.mostrarPutModalExpediente = false;
-  }
+actualizarExpediente(): void {
+  // Verificar si this.expedienteSeleccionadoParaActualizar no es nulo
+  if (this.expedienteSeleccionadoParaActualizar !== null) {
+    // Obtener los datos actualizados del formulario
+    const datosActualizados = this.expedienteForm.value;
+    // Actualizar el expediente seleccionado con los nuevos datos
+    Object.assign(this.expedienteSeleccionadoParaActualizar, datosActualizados);
 
-  actualizarExpediente(): void {
-    const expediente: Expediente = this.expedienteForm.value;
-    this.expedienteService.updateExpediente(expediente.id, expediente)
-      .subscribe(
-        result => console.log('Expediente actualizado:', result),
-        error => console.error('Error al actualizar el expediente:', error)
-      );
+    // Llamar al servicio para actualizar el expediente
+    this.expedienteService.updateExpediente(this.expedienteSeleccionadoParaActualizar.id).subscribe(
+      (updateExpediente) => {
+        console.log('Expediente actualizado', updateExpediente);
+        // Puedes actualizar la lista de expedientes o realizar otras acciones
+        this.consultarExpedientes();
+        // Cerrar el modal después de la actualización
+        this.cerrarPutModalExpediente();
+      },
+      (error) => {
+        console.error('Error al actualizar el expediente:', error);
+      }
+    );
+  } else {
+    console.error('No se puede actualizar el expediente porque es nulo.');
   }
+}
+
+
 }

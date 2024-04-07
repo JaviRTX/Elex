@@ -128,8 +128,10 @@
         <!-- Añade más detalles del expediente si lo deseas -->
       </div>
       <section>
+
+
         <!-- Botón para abrir el modal -->
-<button class="btn btn-primary" (click)="abrirPutModalExpediente()">Actualizar Expediente</button>
+
 
 <!-- Modal para actualizar un expediente -->
 <div *ngIf="mostrarPutModalExpediente" class="modal fade show d-block" style="background-color: rgba(0, 0, 0, 0.6);">
@@ -197,11 +199,11 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="cerrarPutModalExpediente()">Cancelar</button>
         <button type="button" class="btn btn-success" (click)="actualizarExpediente()">Guardar Cambios</button>
+
       </div>
     </div>
   </div>
 </div>
-
       </section>
 
       <section>
@@ -239,6 +241,7 @@
                 <button class="btn btn-danger" (click)="borrarLogico(expediente.id)">
                   Borrar
                 </button>
+                <button type="button" class="btn btn-primary" (click)="abrirPutModalExpediente(expediente)">Actualizar</button>
               </td>
             </tr>
           </tbody>
