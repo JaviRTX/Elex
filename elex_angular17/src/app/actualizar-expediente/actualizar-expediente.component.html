@@ -13,8 +13,11 @@
   </div>
   <div class="form-group">
     <label for="estado">Estado:</label>
-    <input type="text" class="form-control" id="estado" [(ngModel)]="expedienteModel.estado" name="estado" placeholder="Estado"/>
-  </div>
+    <select class="form-control" id="estado" [(ngModel)]="expedienteModel.estado" name="estado">
+        <option value="Pendiente">Pendiente</option>
+        <option value="Enviado">Enviado</option>
+    </select>
+</div>
   <div class="form-group">
     <label for="opciones">Opciones:</label>
     <input type="text" class="form-control" id="opciones" [(ngModel)]="expedienteModel.opciones" name="opciones" placeholder="Opciones"/>
