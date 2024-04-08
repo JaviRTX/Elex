@@ -38,8 +38,7 @@ export class ExpedientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.consultarExpedientes();
-    // Puedes añadir más lógica aquí si es necesario
+ 
   }
   onSubmit(): void {
     Swal.fire({
