@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ExpedienteService } from '../services/expediente.service';
 import { Expediente } from '../models/expediente.model';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-expedientes',
   templateUrl: './expediente.component.html',
@@ -41,8 +42,17 @@ export class ExpedientesComponent implements OnInit {
     // Puedes añadir más lógica aquí si es necesario
   }
   onSubmit(): void {
-    // Asegúrate de que el modelo Expediente acepta exactamente estos campos y en este orden
-    const expediente = new Expediente(
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Estás a punto de crear un nuevo expediente',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, crearlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const expediente = new Expediente(
       this.expedienteForm.value.id,
       this.expedienteForm.value.codigo,
       this.expedienteForm.value.fecha,
@@ -58,11 +68,21 @@ export class ExpedientesComponent implements OnInit {
       this.expedienteForm.value.tasaDocumento
     );
     this.expedienteService.createExpediente(expediente).subscribe(result => {
-      console.log('Expediente creado:', result);
+      Swal.fire(
+        '¡Creado!',
+        'El expediente ha sido creado con éxito.',
+        'success'
+      );
     }, error => {
-      console.error('Error al crear el expediente:', error);
+      Swal.fire(
+        'Error',
+        'Hubo un problema al crear el expediente: ' + error.message,
+        'error'
+      );
     });
   }
+});
+}
   consultarExpedientes(): void {
     this.expedienteService.consultarExpedientes().subscribe(expedientes => {
       // Filtra para mostrar solo expedientes activos
@@ -71,6 +91,7 @@ export class ExpedientesComponent implements OnInit {
       console.error('Error al consultar los expedientes:', error);
     });
   }
+  
   buscarExpediente(): void {
     if (this.busquedaForm.valid) {
       const codigo = this.busquedaForm.get('codigo')?.value;
