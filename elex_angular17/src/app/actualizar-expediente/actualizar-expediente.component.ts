@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActualizarExpedienteService } from '../services/actualizar-expediente.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-actualizar-expediente',
@@ -22,21 +23,51 @@ export class ActualizarExpedienteComponent {
   constructor(private http: HttpClient, private actualizarExpedienteService: ActualizarExpedienteService) { }
 
   actualizarExpediente(): void {
-    const params = new HttpParams()
-      .set('codigo', this.expedienteModel.codigo)
-      .set('fecha', this.expedienteModel.fecha ? this.expedienteModel.fecha.toString() : '')
-      .set('estado', this.expedienteModel.estado)
-      .set('opciones', this.expedienteModel.opciones || '')
-      .set('descripcion', this.expedienteModel.descripcion)
-      .set('tipo', this.expedienteModel.tipo ? this.expedienteModel.tipo.toString() : '')
-      .set('activo', this.expedienteModel.activo.toString());
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Quieres actualizar este expediente?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, actualizarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Mostrar spinner
+        Swal.fire({
+          title: 'Actualizando...',
+          text: 'Por favor, espera.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
 
-    this.actualizarExpedienteService.updateExpediente(this.expedienteModel.id, params).subscribe({
-      next: (expedienteActualizado: any) => {
-        console.log('Expediente actualizado:', expedienteActualizado);
-      },
-      error: (error: any) => {
-        console.error('Error al actualizar el expediente:', error);
+        const params = new HttpParams()
+          .set('codigo', this.expedienteModel.codigo)
+          .set('fecha', this.expedienteModel.fecha ? this.expedienteModel.fecha.toString() : '')
+          .set('estado', this.expedienteModel.estado)
+          .set('opciones', this.expedienteModel.opciones || '')
+          .set('descripcion', this.expedienteModel.descripcion)
+          .set('tipo', this.expedienteModel.tipo ? this.expedienteModel.tipo.toString() : '')
+          .set('activo', this.expedienteModel.activo.toString());
+
+        this.actualizarExpedienteService.updateExpediente(this.expedienteModel.id, params).subscribe({
+          next: (expedienteActualizado: any) => {
+            Swal.fire(
+              '¡Actualizado!',
+              'El expediente ha sido actualizado con éxito.',
+              'success'
+            );
+          },
+          error: (error: any) => {
+            Swal.fire(
+              'Error',
+              'Hubo un problema al actualizar el expediente: ' + error.message,
+              'error'
+            );
+          }
+        });
       }
     });
   }

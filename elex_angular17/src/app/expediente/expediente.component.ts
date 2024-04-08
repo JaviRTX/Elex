@@ -83,53 +83,109 @@ export class ExpedientesComponent implements OnInit {
   }
 });
 }
-  consultarExpedientes(): void {
-    this.expedienteService.consultarExpedientes().subscribe(expedientes => {
-      // Filtra para mostrar solo expedientes activos
+consultarExpedientes(): void {
+  this.expedienteService.consultarExpedientes().subscribe(
+    expedientes => {
       this.expedientes = expedientes.filter(expediente => expediente.activo);
-    }, error => {
+
+      // Mostrar confirmación
+      Swal.fire({
+        title: 'Expedientes Consultados',
+        text: 'Los expedientes activos han sido cargados correctamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+    },
+    error => {
       console.error('Error al consultar los expedientes:', error);
-    });
-  }
-  
+    }
+  );
+}
+
   buscarExpediente(): void {
-    if (this.busquedaForm.valid) {
-      const codigo = this.busquedaForm.get('codigo')?.value;
-      if (codigo) {
-        this.expedienteService.getExpedienteByCodigo(codigo).subscribe(
-          expediente => {
-            // Verificar si el expediente está activo
-            if (expediente && expediente.activo) {
-              this.expedienteEncontrado = expediente;
-            } else {
-              console.error('El expediente encontrado no está activo o no existe');
-              this.expedienteEncontrado = null;
-            }
-          },
-          error => {
-            console.error('Error al buscar expediente:', error);
+  if (this.busquedaForm.valid) {
+    const codigo = this.busquedaForm.get('codigo')?.value;
+    if (codigo) {
+      this.expedienteService.getExpedienteByCodigo(codigo).subscribe(
+        expediente => {
+          if (expediente && expediente.activo) {
+            this.expedienteEncontrado = expediente;
+            Swal.fire({
+              title: 'Expediente Encontrado',
+              html: `
+
+                <strong>Id:</strong> ${expediente.id}<br>
+                <strong>Código:</strong> ${expediente.codigo}<br>
+                <strong>Fecha:</strong> ${expediente.fecha}<br>
+                <strong>Estado:</strong> ${expediente.estado}<br>
+                <strong>Descripción:</strong> ${expediente.descripcion}<br>
+                <!-- más campos según necesites -->
+              `,
+              icon: 'success'
+            });
+          } else {
+            Swal.fire('No Encontrado', 'El expediente encontrado no está activo o no existe', 'error');
             this.expedienteEncontrado = null;
           }
-        );
-      } else {
-        console.error('El código de expediente está vacío');
-      }
+        },
+        error => {
+          Swal.fire('Error', 'Error al buscar expediente: ' + error.message, 'error');
+          this.expedienteEncontrado = null;
+        }
+      );
     } else {
-      console.error('Formulario de búsqueda no es válido');
+      Swal.fire('Error', 'El código de expediente está vacío', 'error');
     }
+  } else {
+    Swal.fire('Error', 'Formulario de búsqueda no es válido', 'error');
   }
+}
 
-  borrarLogico(expedienteId: number): void {
-    this.expedienteService.borrarLogico(expedienteId).subscribe(
-      (expedienteActualizado) => {
-        console.log('Expediente borrado lógicamente:', expedienteActualizado);
-        // Puedes actualizar la lista de expedientes o realizar otras acciones
-        this.consultarExpedientes();
-      },
-      (error) => {
-        console.error('Error al borrar el expediente:', error);
-      }
-    );
+borrarLogico(expedienteId: number): void {
+  Swal.fire({
+    title: '¿Estás seguro?',
+    text: 'El expediente será borrado lógicamente',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sí, bórralo'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Mostrar spinner
+      Swal.fire({
+        title: 'Borrando...',
+        text: 'Por favor, espera.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      });
+
+      this.expedienteService.borrarLogico(expedienteId).subscribe(
+        (expedienteActualizado) => {
+          // Cerrar el spinner
+          Swal.close();
+
+          console.log('Expediente borrado lógicamente:', expedienteActualizado);
+          Swal.fire(
+            '¡Borrado!',
+            'El expediente ha sido borrado lógicamente.',
+            'success'
+          );
+          this.consultarExpedientes();
+        },
+        (error) => {
+          console.error('Error al borrar el expediente:', error);
+          Swal.fire(
+            'Error',
+            'Hubo un problema al borrar el expediente: ' + error.message,
+            'error'
+          );
+        }
+      );
+    }
+  });
 }
 
 mostrarModal: boolean = false;

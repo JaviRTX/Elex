@@ -9,7 +9,7 @@
           <label for="expedienteId">ID del Expediente:</label>
           <input type="number" class="form-control" id="expedienteId" formControlName="expedienteId">
         </div>
-        <button type="submit" class="btn btn-primary">Buscar Actuaciones</button>
+        <button type="submit" class="btn btn-primary mt-2">Buscar Actuaciones</button>
       </form>
 
       <!-- Formulario para filtrar actuaciones por rango de fechas -->
@@ -77,8 +77,7 @@
         </table>
       </div>
     </div>
-
-    <!-- Derecha: Formulario para actualizar una actuación -->
+   
     <!-- Derecha: Formulario para actualizar una actuación -->
 <div class="col-md-6">
   <form [formGroup]="actuacionForm" (ngSubmit)="actualizarActuacion()">
