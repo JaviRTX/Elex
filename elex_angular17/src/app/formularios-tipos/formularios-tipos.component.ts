@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
 // Importaciones propias
 import { TiposService } from '../services/tipos.service';
 import { Tipos } from '../models/tipos.model';
+import Swal from 'sweetalert2';
 
 TiposService
 
@@ -81,12 +82,32 @@ export class FormulariosTiposComponent implements OnInit{
 
   // Y el borrado...
   borrarTipo(id: number): void {
-    if (confirm("¿Estás seguro de querer borrar este tipo?")) {
-        // Llamar a un servicio que realice el borrado lógico
-        this.servicio.borrarLogicoTipo(id).subscribe(() => {
-            this.mensaje = "Tipo borrado lógicamente";
-            this.cargarTipos();
+    Swal.fire({
+      title: '¿Estás seguro de querer borrar este tipo?',
+      text: '¡No podrás revertir esto!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, bórralo!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Mostrar el spinner
+        Swal.fire({
+          title: 'Borrando...',
+          timer: 5000,
+          willOpen: () => {
+            Swal.showLoading();
+          },
+          didClose: () => {
+            // Llamar al servicio que realiza el borrado lógico
+            this.servicio.borrarLogicoTipo(id).subscribe(() => {
+              this.mensaje = "Tipo borrado lógicamente";
+              this.cargarTipos();
+            });
+          }
         });
-    }
-}
+      }
+    });
+  }
 }

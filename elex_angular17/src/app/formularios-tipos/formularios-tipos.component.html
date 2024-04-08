@@ -28,7 +28,8 @@
 
         <!-- Botones para actualizar un tipo existente -->
         <section *ngIf="tipoParaActualizar">
-            <button type="button" class="btn btn-warning" (click)="actualizarTipoFormulario()">Actualizar</button>
+            <button type="button" class="btn btn-success" (click)="actualizarTipoFormulario()">Actualizar</button>
+            |
             <button type="button" class="btn btn-light" (click)="cancelarActualizacion()">Cancelar</button>
         </section>
     </form>
@@ -46,9 +47,9 @@
                 <td>{{ tipo.id }}</td>
                 <td>{{ tipo.materia }}</td>
                 <td>
-                    <button class="btn btn-warning btn-sm" (click)="prepararActualizacion(tipo)">Actualizar</button>
+                    <button class="btn btn-success btn-sm" (click)="prepararActualizacion(tipo)">Actualizar</button>
                       |
-                    <button class="btn btn-danger btn-sm" (click)="borrarTipo(tipo.id)">Borrar</button>
+                      <button class="btn btn-danger btn-sm" (click)="borrarTipo(tipo.id)">Borrar</button>
                 </td>
             </tr>
         </tbody>
