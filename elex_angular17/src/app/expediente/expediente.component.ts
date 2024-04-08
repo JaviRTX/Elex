@@ -111,44 +111,14 @@ export class ExpedientesComponent implements OnInit {
     );
 }
 
+mostrarModal: boolean = false;
 
-abrirPutModalExpediente(expediente: Expediente): void {
-  // Asignar el expediente seleccionado para actualizar
-  this.expedienteSeleccionadoParaActualizar = { ...expediente };
-  // Abrir el modal de actualización
-  this.mostrarPutModalExpediente = true;
+abrirModal(): void {
+  this.mostrarModal = true;
 }
 
-cerrarPutModalExpediente(): void {
-  // Cerrar el modal de actualización
-  this.mostrarPutModalExpediente = false;
+cerrarModal(): void {
+  this.mostrarModal = false;
 }
-
-actualizarExpediente(): void {
-  // Verificar si this.expedienteSeleccionadoParaActualizar no es nulo
-  if (this.expedienteSeleccionadoParaActualizar !== null) {
-    // Obtener los datos actualizados del formulario
-    const datosActualizados = this.expedienteForm.value;
-    // Actualizar el expediente seleccionado con los nuevos datos
-    Object.assign(this.expedienteSeleccionadoParaActualizar, datosActualizados);
-
-    // Llamar al servicio para actualizar el expediente
-    this.expedienteService.updateExpediente(this.expedienteSeleccionadoParaActualizar.id).subscribe(
-      (updateExpediente) => {
-        console.log('Expediente actualizado', updateExpediente);
-        // Puedes actualizar la lista de expedientes o realizar otras acciones
-        this.consultarExpedientes();
-        // Cerrar el modal después de la actualización
-        this.cerrarPutModalExpediente();
-      },
-      (error) => {
-        console.error('Error al actualizar el expediente:', error);
-      }
-    );
-  } else {
-    console.error('No se puede actualizar el expediente porque es nulo.');
-  }
-}
-
 
 }

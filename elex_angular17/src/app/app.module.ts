@@ -15,6 +15,7 @@ import { ExpedientesComponent } from './expediente/expediente.component'; // Ase
 import { ReactiveFormsModule } from '@angular/forms';
 import { ActuacionGestionComponent } from './actuaciones/actuacion-gestion/actuacion-gestion.component';
 import { DocumentoGestionComponent } from './documentos/documento-gestion/documento-gestion.component';
+import { ActualizarExpedienteComponent } from './actualizar-expediente/actualizar-expediente.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DocumentoGestionComponent } from './documentos/documento-gestion/docume
     ExpedientesComponent,
     ActuacionGestionComponent,
     DocumentoGestionComponent,
+    ActualizarExpedienteComponent,
   
   ],
   imports: [

@@ -1,0 +1,35 @@
+<form (ngSubmit)="actualizarExpediente()">
+  <div class="form-group">
+    <label for="id">ID del Expediente:</label>
+    <input type="number" class="form-control" id="id" [(ngModel)]="expedienteModel.id" name="id" placeholder="ID del Expediente"/>
+  </div>
+  <div class="form-group">
+    <label for="codigo">Código:</label>
+    <input type="text" class="form-control" id="codigo" [(ngModel)]="expedienteModel.codigo" name="codigo" placeholder="Código"/>
+  </div>
+  <div class="form-group">
+    <label for="fecha">Fecha:</label>
+    <input type="date" class="form-control" id="fecha" [(ngModel)]="expedienteModel.fecha" name="fecha"/>
+  </div>
+  <div class="form-group">
+    <label for="estado">Estado:</label>
+    <input type="text" class="form-control" id="estado" [(ngModel)]="expedienteModel.estado" name="estado" placeholder="Estado"/>
+  </div>
+  <div class="form-group">
+    <label for="opciones">Opciones:</label>
+    <input type="text" class="form-control" id="opciones" [(ngModel)]="expedienteModel.opciones" name="opciones" placeholder="Opciones"/>
+  </div>
+  <div class="form-group">
+    <label for="descripcion">Descripción:</label>
+    <textarea class="form-control" id="descripcion" [(ngModel)]="expedienteModel.descripcion" name="descripcion" placeholder="Descripción"></textarea>
+  </div>
+  <div class="form-group">
+    <label for="tipo">Tipo:</label>
+    <input type="number" class="form-control" id="tipo" [(ngModel)]="expedienteModel.tipo" name="tipo" placeholder="Tipo"/>
+  </div>
+  <div class="form-group form-check">
+    <input type="checkbox" class="form-check-input" id="activo" [(ngModel)]="expedienteModel.activo" name="activo"/>
+    <label class="form-check-label" for="activo">Activo</label>
+  </div>
+  <button type="submit" class="btn btn-primary">Actualizar Expediente</button>
+</form>
