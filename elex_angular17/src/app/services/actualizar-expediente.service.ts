@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -10,8 +10,8 @@ export class ActualizarExpedienteService {
 
   constructor(private http: HttpClient) { }
 
-  updateExpediente(id: number, expedienteData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/api/expedientes/${id}/actualizar`, expedienteData);
+  updateExpediente(id: number, params: HttpParams): Observable<any> {
+    return this.http.put(`${this.apiUrl}/api/expedientes/${id}/actualizar`, null, { params });
   }
 }
 
