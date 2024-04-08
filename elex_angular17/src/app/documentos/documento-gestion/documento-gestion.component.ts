@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Documento } from '../../models/documento.model';
 import { DocumentoService } from '../../services/documento.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-documento-gestion',
@@ -27,32 +28,86 @@ export class DocumentoGestionComponent {
     });
   }
 
-onSubmit() {
-  const expedienteId = this.consultaForm.get('expedienteId')!.value;
-  this.documentoService.getDocumentosByExpedienteId(expedienteId).subscribe(
-    data => {
-      // Si 'activo' es booleano
-      this.documentos = data.filter(doc => doc.activo);
+  onSubmit() {
+    const expedienteId = this.consultaForm.get('expedienteId')!.value;
 
-      // Si 'activo' es un número y quieres filtrar aquellos que no sean 0
-      // this.documentos = data.filter(doc => doc.activo !== 0);
-    },
-    error => console.error('Error al obtener documentos:', error)
-  );
-}
-
-onSubmitActualizacion() {
-  if (this.actualizacionForm.valid) {
-    const documentoActualizado: Documento = this.actualizacionForm.value;
-    this.documentoService.actualizarDocumento(documentoActualizado.id, documentoActualizado).subscribe({
-      next: () => {
-        console.log('Documento actualizado con éxito');
-        // Otras acciones, como actualizar la lista de documentos
-      },
-      error: error => console.error('Error al actualizar el documento', error)
+    // Mostrar spinner
+    Swal.fire({
+      title: 'Cargando...',
+      text: 'Obteniendo documentos del expediente.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
     });
-  } else {
-    console.error('Formulario de actualización no es válido');
+
+    this.documentoService.getDocumentosByExpedienteId(expedienteId).subscribe(
+      data => {
+        // Cerrar el spinner
+        Swal.close();
+
+        // Filtrar y almacenar los documentos activos
+        this.documentos = data.filter(doc => doc.activo);
+
+        // Mostrar un mensaje de éxito con la cantidad de documentos encontrados
+        Swal.fire(
+          'Documentos Cargados',
+          `Se han cargado ${this.documentos.length} documentos del expediente.`,
+          'success'
+        );
+      },
+      error => {
+        console.error('Error al obtener documentos:', error);
+        Swal.fire(
+          'Error',
+          'Hubo un problema al obtener los documentos: ' + error.message,
+          'error'
+        );
+      }
+    );
   }
-}
+
+  onSubmitActualizacion() {
+    if (this.actualizacionForm.valid) {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: '¿Quieres actualizar este documento?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, actualizarlo'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const documentoActualizado: Documento = this.actualizacionForm.value;
+          this.documentoService.actualizarDocumento(documentoActualizado.id, documentoActualizado).subscribe({
+            next: () => {
+              console.log('Documento actualizado con éxito');
+              Swal.fire(
+                'Actualizado',
+                'El documento ha sido actualizado con éxito.',
+                'success'
+              );
+              // Otras acciones, como actualizar la lista de documentos
+            },
+            error: error => {
+              console.error('Error al actualizar el documento', error);
+              Swal.fire(
+                'Error',
+                'Hubo un problema al actualizar el documento: ' + error.message,
+                'error'
+              );
+            }
+          });
+        }
+      });
+    } else {
+      console.error('Formulario de actualización no es válido');
+      Swal.fire(
+        'Error',
+        'El formulario de actualización no es válido. Por favor, revíselo e inténtelo de nuevo.',
+        'error'
+      );
+    }
+  }
 }

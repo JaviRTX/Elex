@@ -61,15 +61,46 @@ export class FormulariosTiposComponent implements OnInit{
 
   actualizarTipoFormulario(): void {
     if (this.tipoParaActualizar && this.materia) {
-      this.servicio.actualizarTipo(this.tipoParaActualizar.id, this.materia).subscribe(resultado => {
-        this.mensaje = "Tipo actualizado";
-        this.cargarTipos();
-        this.tipoParaActualizar = null;
-        this.materia = '---';
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: 'Vas a actualizar el tipo de formulario.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, actualizarlo'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Uso del operador de afirmación no nula aquí
+          this.servicio.actualizarTipo(this.tipoParaActualizar!.id, this.materia).subscribe(resultado => {
+            this.mensaje = "Tipo actualizado";
+            this.cargarTipos();
+            this.tipoParaActualizar = null;
+            this.materia = '---';
+            Swal.fire(
+              'Actualizado',
+              'El tipo de formulario ha sido actualizado con éxito.',
+              'success'
+            );
+          }, error => {
+            console.error('Error al actualizar el tipo', error);
+            Swal.fire(
+              'Error',
+              'Hubo un problema al actualizar el tipo: ' + error.message,
+              'error'
+            );
+          });
+        }
       });
+    } else {
+      console.error('Datos incompletos para la actualización');
+      Swal.fire(
+        'Error',
+        'Datos incompletos para la actualización. Por favor, verifica la información e inténtalo de nuevo.',
+        'error'
+      );
     }
   }
-
   prepararActualizacion(tipo: Tipos): void {
     this.tipoParaActualizar = tipo;
     this.materia = tipo.materia;
